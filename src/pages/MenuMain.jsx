@@ -44,7 +44,7 @@ export default function MainMenu() {
                 <span style={{ marginLeft: "auto" }}>▼</span>
             </div>
 
-            {/* Menu List */}
+            {/* Menu  list nguyen*/}
             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 {menuData.map((item) => (
                     <div
