@@ -34,7 +34,7 @@ export default function MainMenu() {
             display: "block"
         }}>
 
-            {/* Header Danh mục */}
+            {/* Header  */}
             <div style={{
                 background: "#0084ff", color: "#fff", padding: "10px 15px",
                 borderRadius: "20px", display: "flex", alignItems: "center", marginBottom: "10px",
