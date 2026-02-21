@@ -108,7 +108,7 @@ export default function MainMenu() {
                 </div>
             </div>
 
-            {/* Banner Khuyến mãi */}
+            {/* Banner Khuyến Mãi*/}
             <div style={{ marginTop: "15px", cursor: "pointer" }}>
                 <img
                     src="/img/banner-menu.jpg"
@@ -117,7 +117,7 @@ export default function MainMenu() {
                         width: "100%",
                         borderRadius: "15px",
                         display: "block",
-                        boxShadow: "0 4px 8px rgba(0,0,0,0.1)"
+
                     }}
                 />
             </div>
