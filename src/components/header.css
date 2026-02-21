@@ -1,0 +1,94 @@
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+
+.header-wrapper {
+  position: fixed;     /* dính trên cùng màn hình */
+  top: 0;
+  left: 0;
+  width: 100%;         /* full ngang */
+  z-index: 9999;       /* nổi trên mọi thứ */
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ===== TOP BANNER ===== */
+.top-banner {
+  width: 100%;
+  height: 80px;
+  overflow: hidden;
+}
+
+.top-banner img,
+.top-banner video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== MAIN HEADER ===== */
+.main-header {
+  width: 100%;
+  height: 70px;
+  background: #ff2d55;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+/* ===== LOGO ===== */
+.logo{
+  margin-left: -65px;
+  margin-top: 27px;
+  
+  
+}
+.logo img {
+  height: 70px;
+  border-radius: 0 50px 50px 0;
+}
+
+/* ===== SEARCH ===== */
+.search-box {
+  flex: 1;
+}
+
+.search-box input {
+  width: 80%;
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  padding: 0 20px;
+  font-size: 15px;
+  outline: none;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.header-actions {
+  display: flex;
+  gap: 20px;
+}
+
+.header-actions button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.header-actions button:hover {
+  opacity: 0.8;
+}
+main {
+  margin-top: 150px; /* 80 banner + 70 header */
+}
