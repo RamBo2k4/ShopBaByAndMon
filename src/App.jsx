@@ -1,12 +1,10 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import Header from './components/header'
 import ProductCard from './components/ProductCard'
+import Footer from './pages/Footer'
 
 function App() {
-  const [count, setCount] = useState(0)
+
 
   return (
     <>
@@ -33,6 +31,7 @@ function App() {
       <Header/>
       <hr />
       <ProductCard/>
+      <Footer />
     </>
   )
 }
