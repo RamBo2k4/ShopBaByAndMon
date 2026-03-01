@@ -37,7 +37,7 @@ function Header() {
 
                 <button>
                   <span className="icon">🔔</span>
-                  <span>Thông báo!</span>
+                  <span>Thông báo</span>
                 </button>
 
                 <button>
