@@ -10,24 +10,24 @@ function Footer() {
     borderRight: "2px solid white"
   };
   const ListPay = [
-    { src: "../src/img/momo.png", link: "https://demo-momo.com" },
-    { src: "../src/img/vietcombank.jpg", link: "https://demo-vietcombank.com" },
-    { src: "../src/img/Agribank.png", link: "https://demo-agribank.com" },
-    { src: "../src/img/vnpay.png", link: "https://demo-vnpay.com" },
-    { src: "../src/img/jcb.png", link: "https://demo-jcb.com" },
-    { src: "../src/img/zalopay.png", link: "https://demo-zalopay.com" },
-    { src: "../src/img/tec.png", link: "https://demo-techcombank.com" },
-    { src: "../src/img/bi.png", link: "https://demo-bidv.com" }
+    { src: "../img/momo.png", link: "https://demo-momo.com" },
+    { src: "../img/vietcombank.jpg", link: "https://demo-vietcombank.com" },
+    { src: "../img/Agribank.png", link: "https://demo-agribank.com" },
+    { src: "../img/vnpay.png", link: "https://demo-vnpay.com" },
+    { src: "../img/jcb.png", link: "https://demo-jcb.com" },
+    { src: "../img/zalopay.png", link: "https://demo-zalopay.com" },
+    { src: "../img/tec.png", link: "https://demo-techcombank.com" },
+    { src: "../img/bi.png", link: "https://demo-bidv.com" }
   ];
   const Listlogictic = [
-    { src: "../src/img/grap.png", link: "https://demo-momo.com" },
-    { src: "../src/img/be.jpg", link: "https://demo-vietcombank.com" },
-    { src: "../src/img/shope.png", link: "https://demo-agribank.com" }
+    { src: "../img/grap.png", link: "https://demo-momo.com" },
+    { src: "../img/be.jpg", link: "https://demo-vietcombank.com" },
+    { src: "../img/shope.png", link: "https://demo-agribank.com" }
   ];
   const Listcontact = [
-    { src: "../src/img/grap.png", link: "https://demo-momo.com" },
-    { src: "../src/img/be.jpg", link: "https://demo-vietcombank.com" },
-    { src: "../src/img/shope.png", link: "https://demo-agribank.com" }
+    { src: "../img/grap.png", link: "https://demo-momo.com" },
+    { src: "../img/be.jpg", link: "https://demo-vietcombank.com" },
+    { src: "../img/shope.png", link: "https://demo-agribank.com" }
   ];
 
 
@@ -103,7 +103,7 @@ function Footer() {
 
             {/* QR */}
             <img
-              src="../src/img/QR.png"
+              src="../img/QR.png"
               style={{ width: "120px", height: "120px" }}
             />
 
@@ -113,8 +113,8 @@ function Footer() {
               flexDirection: "column",
               gap: "10px"
             }}>
-              <img src="../src/img/app.png" style={{ width: "160px" }} />
-              <img src="../src/img/ggl.png" style={{ width: "160px" }} />
+              <img src="../img/app.png" style={{ width: "160px" }} />
+              <img src="../img/ggl.png" style={{ width: "160px" }} />
             </div>
 
           </div>
