@@ -11,12 +11,12 @@ const menuData = [
 ];
 
 const brands = [
-    { name: "Bobby", img: "/img/bobby.png" },
-    { name: "Dielac", img: "/img/dielac.png" },
-    { name: "Pigeon", img: "/img/pigeon.png" },
-    { name: "Vinamilk", img: "/img/vinamilk.png" },
-    { name: "Huggies", img: "/img/Huggies.png" },
-    { name: "Moony", img: "/img/moony.png" }
+    { name: "Bobby", img: "../src/assets/img/bobby.png" },
+    { name: "Dielac", img: "../src/assets/img/dielac.png" },
+    { name: "Pigeon", img: "../src/assets/img/pigeon.png" },
+    { name: "Vinamilk", img: "../src/assets/img/vinamilk.png" },
+    { name: "Huggies", img: "../src/assets/img/Huggies.png" },
+    { name: "Moony", img: "../src/assets/img/moony.png" }
 ];
 
 export default function MainMenu() {
@@ -111,7 +111,7 @@ export default function MainMenu() {
             {/* Banner Khuyến Mãi*/}
             <div style={{ marginTop: "15px", cursor: "pointer" }}>
                 <img
-                    src="/img/banner-menu.jpg"
+                    src="../src/assets/img/banner-menu.jpg"
                     alt="Siêu deal banner"
                     style={{
                         width: "100%",

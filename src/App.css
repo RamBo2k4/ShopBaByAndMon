@@ -6,11 +6,11 @@
 
 .layout{
   display: flex;
-  flex: 1;              /* 👈 THÊM DÒNG NÀY */
+  flex: 1;              
   margin-top: 150px;
 }
 
 .content{
   flex: 1;
-  background: #eef6ff;  /* 👈 tránh nền đen */
+  background: #eef6ff;  
 }

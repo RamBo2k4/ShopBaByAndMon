@@ -1,4 +1,4 @@
-import "./header.css";
+import '../assets/css/header.css';
 
 function Header() {
   return (
@@ -7,7 +7,7 @@ function Header() {
       <div className="top-banner">
         <a href="#">
           <img
-            src="/img/banner.jpg"
+            src="../src/assets/img/banner.jpg"
             alt="banner"
           />
         </a>
@@ -15,7 +15,7 @@ function Header() {
 
       <div className="main-header">
         <div className="logo">
-          <img src="/img/logo.jpg" alt="logo" />
+          <img src="../src/assets//img/logo.jpg" alt="logo" />
         </div>
 
         <div className="header-actions">
