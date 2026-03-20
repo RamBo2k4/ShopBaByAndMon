@@ -1,4 +1,4 @@
-import IconGrid from "../components/IconGrid";
+import IconGrid from "./IconGrid";
 function Footer() {
 
   const colStyle = {
@@ -10,24 +10,24 @@ function Footer() {
     borderRight: "2px solid white"
   };
   const ListPay = [
-    { src: "../img/momo.png", link: "https://demo-momo.com" },
-    { src: "../img/vietcombank.jpg", link: "https://demo-vietcombank.com" },
-    { src: "../img/Agribank.png", link: "https://demo-agribank.com" },
-    { src: "../img/vnpay.png", link: "https://demo-vnpay.com" },
-    { src: "../img/jcb.png", link: "https://demo-jcb.com" },
-    { src: "../img/zalopay.png", link: "https://demo-zalopay.com" },
-    { src: "../img/tec.png", link: "https://demo-techcombank.com" },
-    { src: "../img/bi.png", link: "https://demo-bidv.com" }
+    { src: "../src/assets//img/momo.png", link: "https://demo-momo.com" },
+    { src: "../src/assets/img/vietcombank.jpg", link: "https://demo-vietcombank.com" },
+    { src: "../src/assets/img/Agribank.png", link: "https://demo-agribank.com" },
+    { src: "../src/assets/img/vnpay.png", link: "https://demo-vnpay.com" },
+    { src: "../src/assets/img/jcb.png", link: "https://demo-jcb.com" },
+    { src: "../src/assets/img/zalopay.png", link: "https://demo-zalopay.com" },
+    { src: "../src/assets/img/tec.png", link: "https://demo-techcombank.com" },
+    { src: "../src/assets/img/bi.png", link: "https://demo-bidv.com" }
   ];
   const Listlogictic = [
-    { src: "../img/grap.png", link: "https://demo-momo.com" },
-    { src: "../img/be.jpg", link: "https://demo-vietcombank.com" },
-    { src: "../img/shope.png", link: "https://demo-agribank.com" }
+    { src: "../src/assets/img/grap.png", link: "https://demo-momo.com" },
+    { src: "../src/assets/img/be.jpg", link: "https://demo-vietcombank.com" },
+    { src: "../src/assets/img/shope.png", link: "https://demo-agribank.com" }
   ];
   const Listcontact = [
-    { src: "../img/grap.png", link: "https://demo-momo.com" },
-    { src: "../img/be.jpg", link: "https://demo-vietcombank.com" },
-    { src: "../img/shope.png", link: "https://demo-agribank.com" }
+    { src: "../src/assets/img/grap.png", link: "https://demo-momo.com" },
+    { src: "../src/assets/img/be.jpg", link: "https://demo-vietcombank.com" },
+    { src: "../src/assets/img/shope.png", link: "https://demo-agribank.com" }
   ];
 
 
@@ -103,7 +103,7 @@ function Footer() {
 
             {/* QR */}
             <img
-              src="../img/QR.png"
+              src="../src/assets/img/QR.png"
               style={{ width: "120px", height: "120px" }}
             />
 
@@ -113,8 +113,8 @@ function Footer() {
               flexDirection: "column",
               gap: "10px"
             }}>
-              <img src="../img/app.png" style={{ width: "160px" }} />
-              <img src="../img/ggl.png" style={{ width: "160px" }} />
+              <img src="../src/assets/img/app.png" style={{ width: "160px" }} />
+              <img src="../src/assets/img/ggl.png" style={{ width: "160px" }} />
             </div>
 
           </div>

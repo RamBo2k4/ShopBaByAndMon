@@ -1,9 +1,9 @@
 import './App.css'
 import Header from './components/header'
-import Footer from './pages/Footer'
-import MainMenu from './pages/MenuMain'
-import Sale from './components/sale'
-import Chinhsach from './components/chinhsach'
+import Footer from './components/Footer'
+import MainMenu from './components/MenuMain'
+import Sale from './pages/sale'
+import Chinhsach from './pages/chinhsach'
 import Voucher from './components/voucher'
 
 function App() {
@@ -16,8 +16,8 @@ function App() {
         <MainMenu />
 
         <div className="content">
-          {/* <Sale /> */}
-          <Chinhsach />
+          <Sale />
+          {/* <Chinhsach /> */}
         </div>
       </div>
 
