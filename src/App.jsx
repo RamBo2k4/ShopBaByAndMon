@@ -1,17 +1,29 @@
 import './App.css'
 import Header from './components/header'
-import ProductCard from './components/ProductCard'
 import Footer from './pages/Footer'
-import MenuMain from './pages/MenuMain'
+import MainMenu from './pages/MenuMain'
+import Sale from './components/sale'
+import Chinhsach from './components/chinhsach'
+import Voucher from './components/voucher'
+
 function App() {
   return (
-    <>
+    <div className="app">
+
       <Header />
-      <hr />
-      <ProductCard />
-      <MenuMain />
+
+      <div className="layout">
+        <MainMenu />
+
+        <div className="content">
+          {/* <Sale /> */}
+          <Chinhsach />
+        </div>
+      </div>
+
       <Footer />
-    </>
+
+    </div>
   )
 }
 
