@@ -37,7 +37,7 @@ function Footer() {
         style={{
           display: "flex",
           flexWrap: "wrap",
-          backgroundColor: "#ff0e56",
+          backgroundColor: "#339BE5",
           width: "100%",
           alignItems: "stretch"
         }}

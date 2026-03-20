@@ -25,7 +25,7 @@ export default function MainMenu() {
     return (
         <div style={{
             width: "260px",
-            background: "#f0f8ff",
+            background: "#ddeefd",
             padding: "10px",
             fontFamily: "Arial",
             boxSizing: "border-box",
