@@ -1,23 +1,24 @@
 .product-card {
-  width: 320px;
-  background: #f6dede;
+  width: 300px;
+  background: #e8faff;
   border-radius: 20px;
-  border: 2px solid #ff6b6b;
+  border: 2px solid #339be5;
   overflow: hidden;
   position: relative;
   font-family: Arial, sans-serif;
+  height: 430px;
 }
 
 /* IMAGE */
 .product-image img {
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: cover;
 }
 
 /* INFO */
 .product-info {
-  padding: 15px;
+  padding: 10px;
 }
 
 /* PRICE */
@@ -29,11 +30,13 @@
 
 .old-price {
   text-decoration: line-through;
-  color: #444;
+  color: #339be5;
+  font-weight: 700;
+  font-style: italic;
 }
 
 .discount {
-  background: #ff2d55;
+  background: red;
   color: white;
   padding: 3px 8px;
   border-radius: 999px;
@@ -42,15 +45,16 @@
 
 .new-price {
   font-size: 26px;
-  font-weight: bold;
-  color: #ff2d55;
-  margin-top: 5px;
+  font-weight: bolder;
+  color: red;
+  /* margin-top: 5px; */
 }
 
 /* DESCRIPTION */
 .description {
   color: #555;
-  margin: 10px 0;
+  margin: 2px 0 10px 0;
+  height: 40px;
 }
 
 /* OPTIONS */
@@ -61,38 +65,53 @@
 }
 
 .options span {
-  background: #ddd;
-  padding: 6px 10px;
+  background: #339be5;
+  padding: 5px 8px;
   border-radius: 999px;
-  font-size: 13px;
+  font-size: 11px;
 }
-
+.age {
+  color: #339be5;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
 /* META */
 .meta {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: start;
 }
 
 .stars {
   color: gold;
 }
+.meta span {
+  color: #339be5;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 500;
+}
 
 /* CART BUTTON */
 .cart-btn {
   position: absolute;
-  right: 15px;
-  bottom: 15px;
-  background: #ff2d55;
+  right: 10px;
+  bottom: 5px;
+  background: #339be5;
   color: white;
   border: none;
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  font-size: 24px;
+  font-size: 25px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .cart-btn:hover {
   transform: scale(1.1);
+  background-color: red;
 }

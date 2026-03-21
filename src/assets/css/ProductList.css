@@ -1,0 +1,105 @@
+/* ProductList.css - Tất cả CSS gom chung */
+
+/* MAIN CONTAINER */
+.product-list {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f1f2f5;
+}
+
+/* BANNER grid */
+.brand-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 10px;
+  padding: 15px;
+}
+
+.brand-item {
+  background: #fff;
+  border-radius: 20px;
+  padding: 10px;
+  text-align: center;
+  height: 50px;
+  border:
+    1px,
+    solid #339be5;
+}
+
+.brand-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Age filter*/
+.age-filter {
+  display: flex;
+  gap: 10px;
+  padding: 10px 15px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.age-filter button {
+  background: #e8faff;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #339be5;
+  border: 1px solid #339be5;
+}
+
+.age-filter button.active {
+  background: #339be5;
+  color: #fff;
+}
+
+/* PRODUCT GRID */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.product-grid-empty {
+  text-align: center;
+  padding: 60px;
+  color: #999;
+  font-size: 18px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .product-list {
+    padding: 10px;
+  }
+
+  .banner-slider {
+    height: 200px;
+  }
+
+  .slider-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .filter-controls {
+    flex-direction: column;
+  }
+
+  .filter-controls select,
+  .price-range input {
+    width: 100%;
+  }
+
+  .price-range {
+    flex-wrap: wrap;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+  }
+}
