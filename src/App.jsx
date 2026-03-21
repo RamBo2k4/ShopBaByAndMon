@@ -1,12 +1,23 @@
+import { useState } from 'react'
 import './App.css'
 import Header from './components/header'
 import Footer from './components/Footer'
 import MainMenu from './components/MenuMain'
 import Sale from './pages/sale'
 import Chinhsach from './pages/chinhsach'
-import Voucher from './components/voucher'
+import FAQ from './pages/FAQ'
 
 function App() {
+  const [currentPage, setCurrentPage] = useState('sale')
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'faq': return <FAQ />
+      case 'chinhsach': return <Chinhsach />
+      default: return <Sale />
+    }
+  }
+
   return (
     <div className="app">
 
@@ -16,12 +27,11 @@ function App() {
         <MainMenu />
 
         <div className="content">
-          <Sale />
-          {/* <Chinhsach /> */}
+          {renderPage()}
         </div>
       </div>
 
-      <Footer />
+      <Footer onNavigate={setCurrentPage} />
 
     </div>
   )
