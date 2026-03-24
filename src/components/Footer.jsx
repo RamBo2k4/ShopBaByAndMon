@@ -1,5 +1,6 @@
 import IconGrid from "./IconGrid";
-function Footer() {
+
+function Footer({ onNavigate }) {
 
   const colStyle = {
     flex: "1 1 300px",
@@ -9,6 +10,14 @@ function Footer() {
     textAlign: "left",
     borderRight: "2px solid white"
   };
+
+  const linkStyle = {
+    cursor: "pointer",
+    display: "block",
+    marginBottom: "4px",
+    textDecoration: "underline"
+  };
+
   const ListPay = [
     { src: "../src/assets//img/momo.png", link: "https://demo-momo.com" },
     { src: "../src/assets/img/vietcombank.jpg", link: "https://demo-vietcombank.com" },
@@ -24,25 +33,16 @@ function Footer() {
     { src: "../src/assets/img/be.jpg", link: "https://demo-vietcombank.com" },
     { src: "../src/assets/img/shope.png", link: "https://demo-agribank.com" }
   ];
-  const Listcontact = [
-    { src: "../src/assets/img/grap.png", link: "https://demo-momo.com" },
-    { src: "../src/assets/img/be.jpg", link: "https://demo-vietcombank.com" },
-    { src: "../src/assets/img/shope.png", link: "https://demo-agribank.com" }
-  ];
-
 
   return (
     <footer>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          backgroundColor: "#339BE5",
-          width: "100%",
-          alignItems: "stretch"
-        }}
-      >
-
+      <div style={{
+        display: "flex",
+        flexWrap: "wrap",
+        backgroundColor: "#339BE5",
+        width: "100%",
+        alignItems: "stretch"
+      }}>
         <div style={colStyle}>
           <h3 style={{ textAlign: "center" }}>Thông tin liên hệ</h3>
           <p><b><br /> Thành viên Trường Đại Học Công Nghiệp TP.HCM</b></p>
@@ -53,39 +53,36 @@ function Footer() {
         </div>
 
         <div style={{ ...colStyle, textAlign: "center" }}>
-          <h3 >Hỗ trợ khách hàng</h3>
+          <h3>Hỗ trợ khách hàng</h3>
           <p><b><br /> Tra cứu hóa đơn</b></p>
-          <p><b>FAQ</b></p>
-          <p><b>Bảo hành & bảo trì</b></p>
+          <p style={{ ...linkStyle, fontWeight: "bold" }} onClick={() => onNavigate && onNavigate('faq')}>
+            <b>FAQ</b>
+          </p>
+          <p><b>Bảo hành &amp; bảo trì</b></p>
           <p><b>Tin khuyến mãi</b></p>
-          <p><b>Chính sách giao hàng</b></p>
-          <p><b>Chính sách thanh toán</b></p>
+          <p style={{ ...linkStyle, fontWeight: "bold" }} onClick={() => onNavigate && onNavigate('chinhsach')}>
+            <b>Chính sách giao hàng</b>
+          </p>
+          <p style={{ ...linkStyle, fontWeight: "bold" }} onClick={() => onNavigate && onNavigate('chinhsach')}>
+            <b>Chính sách thanh toán</b>
+          </p>
         </div>
 
         <div style={colStyle}>
           <h3 style={{ textAlign: "center" }}>Về thương hiệu</h3>
-          <div style={{display : "flex"}}>
-            <div style={{flex: "1 1 50px", textAlign: "center" }}>
-            <p><b>Giới thiệu website</b></p>
-            <p><b>Tuyển dụng</b></p>
-            <p><b>Chính sách bảo mật</b></p>
-            <p><b>Điều khoản sử dụng</b></p>
-          </div>
-          
-          <div style={{flex: "1 1 50px", textAlign: "center" }}>
-            <p><b>Chấp nhận thanh toán</b></p>
-            <IconGrid
-              icons={ListPay}
-              rows={2}
-              cols={4}
-            />
-            <p><b>Đối tác vận chuyển </b></p>
-            <IconGrid
-              icons={Listlogictic}
-              rows={1}
-              cols={3}
-            />
-          </div>
+          <div style={{ display: "flex" }}>
+            <div style={{ flex: "1 1 50px", textAlign: "center" }}>
+              <p><b>Giới thiệu website</b></p>
+              <p><b>Tuyển dụng</b></p>
+              <p><b>Chính sách bảo mật</b></p>
+              <p><b>Điều khoản sử dụng</b></p>
+            </div>
+            <div style={{ flex: "1 1 50px", textAlign: "center" }}>
+              <p><b>Chấp nhận thanh toán</b></p>
+              <IconGrid icons={ListPay} rows={2} cols={4} />
+              <p><b>Đối tác vận chuyển </b></p>
+              <IconGrid icons={Listlogictic} rows={1} cols={3} />
+            </div>
           </div>
         </div>
 
@@ -100,33 +97,14 @@ function Footer() {
             flexWrap: "wrap",
             marginBottom: "25px"
           }}>
-
-            {/* QR */}
-            <img
-              src="../src/assets/img/QR.png"
-              style={{ width: "120px", height: "120px" }}
-            />
-
-            {/* app store */}
-            <div style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px"
-            }}>
+            <img src="../src/assets/img/QR.png" style={{ width: "120px", height: "120px" }} />
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               <img src="../src/assets/img/app.png" style={{ width: "160px" }} />
               <img src="../src/assets/img/ggl.png" style={{ width: "160px" }} />
             </div>
-
           </div>
-            <IconGrid
-              icons={Listlogictic}
-              rows={1}
-              cols={3}
-              size={60}
-            />
-          
+          <IconGrid icons={Listlogictic} rows={1} cols={3} size={60} />
         </div>
-
       </div>
     </footer>
   );
