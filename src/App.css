@@ -1,16 +1,16 @@
-.app{
+.app {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-.layout{
+.layout {
   display: flex;
-  flex: 1;              
+  flex: 1;
   margin-top: 150px;
 }
 
-.content{
+.content {
   flex: 1;
-  background: #eef6ff;  
+  background: #eef6ff;
 }
