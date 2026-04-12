@@ -8,7 +8,7 @@ import Sale from './pages/sale'
 import Chinhsach from './pages/chinhsach'
 import FAQ from './pages/FAQ'
 import Cart from "./pages/Cart"
-import ProductList from "./pages/ProductList"
+import ProductList from "./components/ProductList"
 import ProductDetail from "./pages/ProductDetail"
 import LoginModal from "./components/LoginModal"
 import Notification from "./components/Notification"

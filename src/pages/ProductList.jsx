@@ -1,40 +1,184 @@
-﻿import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+﻿// components/ProductList.jsx
+import { useState } from "react";
 
 import "../assets/css/ProductList.css";
+import BrandGrid from "../components/BrandGrid";
 import AgeFilterBar from "../components/AgeFilterBar";
 import ProductGrid from "../components/ProductGrid";
-import { getCollectionConfig, matchesAgeFilter } from "../utils/collectionConfig";
+
+import anhSP from "../assets/img/sanpham_card.jpg";
 
 function ProductList() {
-  const { type } = useParams();
-  const [products, setProducts] = useState([]);
   const [activeAge, setActiveAge] = useState("all");
+  const [sortBy, setSortBy] = useState("default");
+  const [priceRange, setPriceRange] = useState([0, 50000000]);
 
-  useEffect(() => {
-    fetch("/product.json")
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.error("Lỗi tải danh sách sản phẩm:", err));
-  }, []);
+  // Dữ liệu sản phẩm
+  const products = [
+    {
+      id: 1,
+      oldPrice: 36000000,
+      newPrice: 18000000,
+      discount: 50,
+      description: "Sữa bột cao cấp, bổ sung DHA cho bé",
+      sold: 36000,
+      rating: 5,
+      options: ["Hộp 300g", "Hộp 600g", "Combo 3 hộp"],
+      image: anhSP,
+      category: "milk",
+      age: "0-6",
+    },
+    {
+      id: 2,
+      oldPrice: 450000,
+      newPrice: 320000,
+      discount: 28,
+      description: "Bỉm siêu thấm, mềm mại cho bé",
+      sold: 28500,
+      rating: 5,
+      options: ["Size S", "Size M", "Size L"],
+      image: anhSP,
+      category: "diaper",
+      age: "0-6",
+    },
+    {
+      id: 3,
+      oldPrice: 890000,
+      newPrice: 650000,
+      discount: 27,
+      description: "Đồ chơi thông minh, phát triển tư duy",
+      sold: 15200,
+      rating: 4,
+      options: ["Màu xanh", "Màu hồng"],
+      image: anhSP,
+      category: "toy",
+      age: "0-6",
+    },
+    {
+      id: 4,
+      oldPrice: 890000,
+      newPrice: 650000,
+      discount: 27,
+      description: "Đồ chơi thông minh, phát triển tư duy",
+      sold: 15200,
+      rating: 4,
+      options: ["Màu xanh", "Màu hồng"],
+      image: anhSP,
+      category: "toy",
+      age: "0-6",
+    },
+    {
+      id: 5,
+      oldPrice: 890000,
+      newPrice: 650000,
+      discount: 27,
+      description: "Đồ chơi thông minh, phát triển tư duy",
+      sold: 15200,
+      rating: 4,
+      options: ["Màu xanh", "Màu hồng"],
+      image: anhSP,
+      category: "toy",
+      age: "0-6",
+    },
+    {
+      id: 6,
+      oldPrice: 890000,
+      newPrice: 650000,
+      discount: 27,
+      description: "Đồ chơi thông minh, phát triển tư duy",
+      sold: 15200,
+      rating: 4,
+      options: ["Màu xanh", "Màu hồng"],
+      image: anhSP,
+      category: "toy",
+      age: "0-6",
+    },
+    {
+      id: 7,
+      oldPrice: 890000,
+      newPrice: 650000,
+      discount: 27,
+      description: "Đồ chơi thông minh, phát triển tư duy",
+      sold: 15200,
+      rating: 4,
+      options: ["Màu xanh", "Màu hồng"],
+      image: anhSP,
+      category: "toy",
+      age: "0-6",
+    },
+    {
+      id: 8,
+      oldPrice: 890000,
+      newPrice: 650000,
+      discount: 27,
+      description: "Đồ chơi thông minh, phát triển tư duy",
+      sold: 15200,
+      rating: 4,
+      options: ["Màu xanh", "Màu hồng"],
+      image: anhSP,
+      category: "toy",
+      age: "0-6",
+    },
+    {
+      id: 9,
+      oldPrice: 890000,
+      newPrice: 650000,
+      discount: 27,
+      description: "Đồ chơi thông minh, phát triển tư duy",
+      sold: 15200,
+      rating: 4,
+      options: ["Màu xanh", "Màu hồng"],
+      image: anhSP,
+      category: "toy",
+      age: "0-6",
+    },
+  ];
 
-  const currentCollection = getCollectionConfig(type);
+  // Lọc sản phẩm
+  // let filteredProducts = products;
 
-  const collectionProducts = useMemo(
-    () => currentCollection.filter(products),
-    [currentCollection, products]
-  );
+  // if (activeFilter !== "all") {
+  //   filteredProducts = filteredProducts.filter(
+  //     (p) => p.category === activeFilter,
+  //   );
+  // }
 
-  const filteredProducts = useMemo(() => {
-    return collectionProducts.filter((product) => matchesAgeFilter(product.age, activeAge));
-  }, [activeAge, collectionProducts]);
+  // filteredProducts = filteredProducts.filter(
+  //   (p) => p.newPrice >= priceRange[0] && p.newPrice <= priceRange[1],
+  // );
+
+  // // Sắp xếp
+  // if (sortBy === "price-asc") {
+  //   filteredProducts.sort((a, b) => a.newPrice - b.newPrice);
+  // } else if (sortBy === "price-desc") {
+  //   filteredProducts.sort((a, b) => b.newPrice - a.newPrice);
+  // } else if (sortBy === "sold-desc") {
+  //   filteredProducts.sort((a, b) => b.sold - a.sold);
+  // }
+
+  // return (
+  //   <main className="product-list">
+  //     <BannerSlider />
+  //     <FilterBar
+  //       activeFilter={activeFilter}
+  //       setActiveFilter={setActiveFilter}
+  //       sortBy={sortBy}
+  //       setSortBy={setSortBy}
+  //       priceRange={priceRange}
+  //       setPriceRange={setPriceRange}
+  //     />
+  //     <ProductGrid products={filteredProducts} />
+  //   </main>
+  // );
+  //lọc theo độ tuổi
+  const filteredProducts =
+    activeAge === "all"
+      ? products
+      : products.filter((p) => p.age === activeAge);
 
   return (
     <main className="product-list">
-      <div className="product-list-header">
-        <h2>{currentCollection.title}</h2>
-        <p>{filteredProducts.length} sản phẩm</p>
-      </div>
+      <BrandGrid />
 
       <AgeFilterBar activeAge={activeAge} setActiveAge={setActiveAge} />
 
