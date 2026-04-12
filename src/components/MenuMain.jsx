@@ -1,13 +1,14 @@
 import { useState } from "react";
 
 const menuData = [
-  { id: 1, label: "Các loại sữa", icon: "🍼" },
-  { id: 2, label: "Các loại tã", icon: "👶" },
-  { id: 3, label: "Đồ chơi học tập", icon: "🧸" },
-  { id: 4, label: "Phấn và sữa tắm", icon: "🛁" },
-  { id: 5, label: "Đồ ăn dặm", icon: "🥣" },
-  { id: 6, label: "Thời trang, phụ kiện", icon: "👗" },
-  { id: 7, label: "Đồ dùng mẹ và bé", icon: "🤱" },
+  // thêm category để biết mỗi menu ứng với loại sản phẩm nào
+  { id: 1, label: "Các loại sữa", icon: "🍼", category: "milk" },
+  { id: 2, label: "Các loại tã", icon: "👶", category: "diaper" },
+  { id: 3, label: "Đồ chơi học tập", icon: "🧸", category: "toy" },
+  { id: 4, label: "Phấn và sữa tắm", icon: "🛁", category: "bath" },
+  { id: 5, label: "Đồ ăn dặm", icon: "🥣", category: "food" },
+  { id: 6, label: "Thời trang, phụ kiện", icon: "👗", category: "fashion" },
+  { id: 7, label: "Đồ dùng mẹ và bé", icon: "🤱", category: "mom" },
 ];
 
 const brands = [
@@ -19,7 +20,8 @@ const brands = [
   { name: "Moony", img: "../src/assets/img/moony.png" },
 ];
 
-export default function MainMenu() {
+// nhận props từ App.jsx
+export default function MainMenu({ onNavigate, onSelectCategory }) {
   const [hoverId, setHoverId] = useState(null);
 
   return (
@@ -36,7 +38,6 @@ export default function MainMenu() {
         paddingTop: "30px",
       }}
     >
-      {/* Header nguyen */}
       <div
         style={{
           background: "#0084ff",
@@ -55,13 +56,19 @@ export default function MainMenu() {
         <span style={{ marginLeft: "auto" }}>▼</span>
       </div>
 
-      {/* Menu  list nguyen*/}
       <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
         {menuData.map((item) => (
           <div
             key={item.id}
             onMouseEnter={() => setHoverId(item.id)}
             onMouseLeave={() => setHoverId(null)}
+            // khi bấm menu
+            // 1) lưu category được chọn
+            // 2) chuyển sang trang productlist
+            onClick={() => {
+              onSelectCategory(item.category);
+              onNavigate("productlist");
+            }}
             style={{
               background: hoverId === item.id ? "#0074e0" : "#0084ff",
               color: "#fff",
@@ -81,7 +88,6 @@ export default function MainMenu() {
         ))}
       </div>
 
-      {/* Box Thương hiệu */}
       <div
         style={{
           background: "#fff",
@@ -103,6 +109,7 @@ export default function MainMenu() {
         >
           Top thương hiệu
         </div>
+
         <div
           style={{
             display: "grid",
@@ -145,7 +152,6 @@ export default function MainMenu() {
         </div>
       </div>
 
-      {/* Banner Khuyến Mãi*/}
       <div style={{ marginTop: "15px", cursor: "pointer" }}>
         <img
           src="../src/assets/img/banner-menu.jpg"

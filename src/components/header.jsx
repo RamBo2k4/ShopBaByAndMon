@@ -1,23 +1,23 @@
 import "../assets/css/header.css";
 
-function Header() {
+function Header({ onOpenLogin, user, onNavigate }) {
   return (
     <header className="header-wrapper">
       <div className="top-banner">
-        <a href="https://concung.com/" target="_blank">
+        <a href="#">
           <img src="../src/assets/img/banner.jpg" alt="banner" />
         </a>
       </div>
 
       <div className="main-header">
         <div className="logo">
-          <img src="../src/assets//img/sanpham_card.jpg" alt="logo" />
+          <img src="../src/assets/img/logo.jpg" alt="logo" />
         </div>
 
         <div className="header-actions">
-          <button className="btn-home">
+          <button className="btn-home" onClick={() => onNavigate("sale")}>
             <span className="icon">
-              <i class="fi fi-rs-house-chimney"></i>
+              <i className="fi fi-rs-house-chimney"></i>
             </span>
             <span>Trang chủ</span>
           </button>
@@ -28,25 +28,25 @@ function Header() {
         </div>
 
         <div className="header-actions">
-          <button>
+          <button onClick={() => onNavigate("cart")}>
             <span className="icon">
-              <i class="fi fi-rr-shopping-cart"></i>
+              <i className="fi fi-rr-shopping-cart"></i>
             </span>
             <span>Giỏ hàng</span>
           </button>
 
-          <button>
+          <button onClick={() => onNavigate("thongbao")}>
             <span className="icon">
-              <i class="fi fi-rr-bell"></i>
+              <i className="fi fi-rr-bell"></i>
             </span>
             <span>Thông báo</span>
           </button>
 
-          <button>
+          <button onClick={onOpenLogin}>
             <span className="icon">
-              <i class="fi fi-br-user"></i>
+              <i className="fi fi-br-user"></i>
             </span>
-            <span>Đăng nhập</span>
+            <span>{user ? user.name : "Đăng nhập"}</span>
           </button>
         </div>
       </div>
