@@ -114,7 +114,7 @@ function ProductCard({
 
       {/* CART BUTTON */}
       <button className="cart-btn">
-        <i class="fi fi-rr-shopping-cart-add"></i>
+        <i className="fi fi-rr-shopping-cart-add"></i>
       </button>
     </div>
   );

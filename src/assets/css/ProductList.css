@@ -8,6 +8,25 @@
   background-color: #f1f2f5;
 }
 
+.product-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 0 15px 16px;
+}
+
+.product-list-header h2 {
+  margin: 0;
+  color: #1b3c59;
+}
+
+.product-list-header p {
+  margin: 0;
+  color: #5e7488;
+  font-weight: 600;
+}
+
 /* BANNER grid */
 .brand-grid {
   display: grid;
@@ -74,6 +93,11 @@
 @media (max-width: 768px) {
   .product-list {
     padding: 10px;
+  }
+
+  .product-list-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .banner-slider {

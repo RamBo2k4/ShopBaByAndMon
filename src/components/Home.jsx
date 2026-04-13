@@ -1,69 +1,277 @@
-import React, { useRef } from 'react';
-import '../assets/css/home.css';
+﻿import { useRef, useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
+import "../assets/css/home.css";
+import { getCollectionProducts } from "../utils/collectionConfig";
 
-const HomeContent = () => {
+const listBanners = [
+  "/img/Banner6.png",
+  "/img/Banner5.png",
+  "/img/Banner7.png",
+  "/img/Banner8.png",
+];
 
-    const scrollRef = useRef(null);
+function Home() {
+  const [products, setProducts] = useState([]);
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [timeLeft, setTimeLeft] = useState({ h: 1, m: 32, s: 54 });
 
+  const scrollRefFlash = useRef(null);
+  const scrollRefGifts = useRef(null);
+  const scrollRefQuickBuy = useRef(null);
+  const scrollRefBrands = useRef(null);
+  const scrollRefBestSeller = useRef(null);
 
-    const handleScroll = (direction) => {
-        if (scrollRef.current) {
-            const scrollAmount = 400;
-            if (direction === 'left') {
-                scrollRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            } else {
-                scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            }
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        let { h, m, s } = prev;
+
+        if (s > 0) s -= 1;
+        else if (m > 0) {
+          s = 59;
+          m -= 1;
+        } else if (h > 0) {
+          s = 59;
+          m = 59;
+          h -= 1;
         }
-    };
 
-    return (
-        <div className="home-body">
-            {/* 1. Banner Khuyến Mãi Lớn */}
-            <div className="main-banner">
-                {/* Thay đường dẫn ảnh  */}
-                <img src="/assets/img/banner_sale_1.jpg" alt="Mẹ săn deal đỉnh" />
-            </div>
+        return { h, m, s };
+      });
+    }, 1000);
 
-            {/* 2. Phần Top Sản Phẩm Ưu Đãi */}
-            <div className="top-deals-section">
-                <h3 className="section-title">TOP CÁC SẢN PHẨM ĐANG CÓ ƯU ĐÃI LỚN</h3>
-                <div className="carousel-container">
-                    <button className="nav-btn prev" onClick={() => handleScroll('left')}>❮</button>
+    return () => clearInterval(timer);
+  }, []);
 
-                    {/* Danh sách mini-card */}
-                    <div className="mini-card-list" ref={scrollRef}>
-                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-                            <div key={i} className="mini-card-placeholder">
-                                <div className="img-temp">
-                                    <img src="/assets/img/bobby-icon.png" alt="Tã" />
-                                </div>
-                                <p>Tã Bobby {i}</p>
-                                <span>Giảm tới 35%...</span>
-                            </div>
-                        ))}
-                    </div>
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIdx((prev) => (prev === listBanners.length - 1 ? 0 : prev + 1));
+    }, 2500);
 
-                    <button className="nav-btn next" onClick={() => handleScroll('right')}>❯</button>
-                </div>
-            </div>
+    return () => clearInterval(timer);
+  }, []);
 
-            {/* 3. Lưới Sản Phẩm Chính  */}
-            <div className="main-product-grid">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-                    <div key={item} className="product-card-slot">
-                        <div className="empty-card">
-                            <div className="image-placeholder">Card của Nhã</div>
-                            <div className="info-placeholder">
-                                <div className="line-1"></div>
-                                <div className="line-2"></div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
+  useEffect(() => {
+    fetch("/product.json")
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch((err) => console.error("Lỗi:", err));
+  }, []);
+
+  const handleScroll = (ref, direction) => {
+    if (!ref.current) return;
+
+    ref.current.scrollBy({
+      left: direction === "left" ? -400 : 400,
+      behavior: "smooth",
+    });
+  };
+
+  const flashSaleProducts = useMemo(() => getCollectionProducts(products, "flash-deals", 10), [products]);
+  const giftProducts = useMemo(() => getCollectionProducts(products, "san-qua-ta-sua", 10), [products]);
+  const cheapestProducts = useMemo(() => getCollectionProducts(products, "mua-nhanh-giam-ngay", 10), [products]);
+  const brandDeals = useMemo(() => getCollectionProducts(products, "uu-dai-thuong-hieu", 10), [products]);
+  const bestSellers = useMemo(() => getCollectionProducts(products, "top-ban-chay", 10), [products]);
+
+  return (
+    <div className="home-body">
+      <section className="main-banner-container">
+        <div className="banner-slider" style={{ transform: `translateX(-${currentIdx * 100}%)` }}>
+          {listBanners.map((banner, index) => (
+            <img key={index} src={banner} alt="Banner" className="banner-item" />
+          ))}
         </div>
-    );
-};
+        <div className="banner-dots">
+          {listBanners.map((_, i) => (
+            <div
+              key={i}
+              className={`dot ${currentIdx === i ? "active" : ""}`}
+              onClick={() => setCurrentIdx(i)}
+            />
+          ))}
+        </div>
+      </section>
 
-export default HomeContent;
+      <section className="sync-section flash-bg">
+        <div className="sync-header-row">
+          <div className="header-left-group">
+            <h3 className="sync-title white-text">Flash Deals</h3>
+            <div className="countdown-timer">
+              <span>{String(timeLeft.h).padStart(2, "0")}</span>:
+              <span>{String(timeLeft.m).padStart(2, "0")}</span>:
+              <span>{String(timeLeft.s).padStart(2, "0")}</span>
+            </div>
+          </div>
+          <Link to="/collection/flash-deals" className="sync-view-all white-text">
+            Xem tất cả {">"}
+          </Link>
+        </div>
+        <div className="sync-carousel-wrapper">
+          <button className="nav-btn-sync prev flash-nav-btn" onClick={() => handleScroll(scrollRefFlash, "left")}>
+            {"<"}
+          </button>
+          <div className="sync-card-list" ref={scrollRefFlash}>
+            {flashSaleProducts.map((p) => (
+              <div key={`flash-${p.id}`} className="sync-card">
+                <div className="sync-img-box">
+                  <img src={p.image} alt="product" />
+                  <span className="sync-badge red-badge">-{p.discount}%</span>
+                </div>
+                <div className="sync-info">
+                  <div className="sync-price-row">
+                    <b className="price-now">{p.newPrice?.toLocaleString()}đ</b>
+                    <del className="price-old">{p.oldPrice?.toLocaleString()}đ</del>
+                  </div>
+                  <p className="sync-name">{p.description?.substring(0, 30)}...</p>
+                  <div className="sync-progress-box">
+                    <div className="sync-progress-bar" style={{ width: "60%" }} />
+                    <span className="sync-sold-text">Đã bán {p.sold}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button className="nav-btn-sync next flash-nav-btn" onClick={() => handleScroll(scrollRefFlash, "right")}>
+            {">"}
+          </button>
+        </div>
+      </section>
+
+      <section className="sync-section blue-bg">
+        <div className="sync-header-row">
+          <h3 className="sync-title blue-text">Săn quà tã sữa</h3>
+          <Link to="/collection/san-qua-ta-sua" className="sync-view-all blue-text">
+            Xem tất cả {">"}
+          </Link>
+        </div>
+        <div className="sync-carousel-wrapper">
+          <button className="nav-btn-sync prev" onClick={() => handleScroll(scrollRefGifts, "left")}>
+            {"<"}
+          </button>
+          <div className="sync-card-list" ref={scrollRefGifts}>
+            {giftProducts.map((p) => (
+              <div key={`gift-${p.id}`} className="sync-card">
+                <div className="sync-img-box">
+                  <img src={p.image} alt="product" />
+                  <span className="sync-badge green-badge">CÓ QUÀ</span>
+                </div>
+                <div className="sync-info">
+                  <b className="p-price-blue">{p.newPrice?.toLocaleString()}đ</b>
+                  <p className="sync-name">{p.description?.substring(0, 30)}...</p>
+                  <div className="sync-sub-bottom">★★★★★</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button className="nav-btn-sync next" onClick={() => handleScroll(scrollRefGifts, "right")}>
+            {">"}
+          </button>
+        </div>
+      </section>
+
+      <section className="sync-section blue-bg">
+        <div className="sync-header-row">
+          <h3 className="sync-title blue-text">Mua nhanh giảm ngay</h3>
+          <Link to="/collection/mua-nhanh-giam-ngay" className="sync-view-all blue-text">
+            Xem tất cả {">"}
+          </Link>
+        </div>
+        <div className="sync-carousel-wrapper">
+          <button className="nav-btn-sync prev" onClick={() => handleScroll(scrollRefQuickBuy, "left")}>
+            {"<"}
+          </button>
+          <div className="sync-card-list" ref={scrollRefQuickBuy}>
+            {cheapestProducts.map((p) => (
+              <div key={`quick-${p.id}`} className="sync-card">
+                <div className="sync-img-box">
+                  <img src={p.image} alt="product" />
+                  <span className="sync-badge blue-badge">-{p.discount}%</span>
+                </div>
+                <div className="sync-info">
+                  <b className="p-price-blue">{p.newPrice?.toLocaleString()}đ</b>
+                  <p className="sync-name">{p.description?.substring(0, 30)}...</p>
+                  <div className="sync-sub-bottom">★★★★★</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button className="nav-btn-sync next" onClick={() => handleScroll(scrollRefQuickBuy, "right")}>
+            {">"}
+          </button>
+        </div>
+      </section>
+
+      <section className="sync-section blue-bg">
+        <div className="sync-header-row">
+          <h3 className="sync-title blue-text">Ưu đãi thương hiệu</h3>
+          <Link to="/collection/uu-dai-thuong-hieu" className="sync-view-all blue-text">
+            Xem tất cả {">"}
+          </Link>
+        </div>
+        <div className="sync-carousel-wrapper">
+          <button className="nav-btn-sync prev" onClick={() => handleScroll(scrollRefBrands, "left")}>
+            {"<"}
+          </button>
+          <div className="sync-card-list" ref={scrollRefBrands}>
+            {brandDeals.map((p) => (
+              <div key={`brand-${p.id}`} className="sync-card">
+                <div className="sync-img-box">
+                  <img src={p.image} alt="product" />
+                  <div className="sync-badge green-badge">{p.discount}% OFF</div>
+                </div>
+                <div className="sync-info">
+                  <b className="p-price-blue" style={{ textAlign: "center" }}>
+                    Giảm {p.discount}%
+                  </b>
+                  <p className="sync-name" style={{ textAlign: "center" }}>
+                    Sản phẩm chính hãng
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button className="nav-btn-sync next" onClick={() => handleScroll(scrollRefBrands, "right")}>
+            {">"}
+          </button>
+        </div>
+      </section>
+
+      <section className="sync-section pink-bg">
+        <div className="sync-header-row">
+          <h3 className="sync-title white-text">Top bán chạy</h3>
+          <Link to="/collection/top-ban-chay" className="sync-view-all white-text">
+            Xem tất cả {">"}
+          </Link>
+        </div>
+        <div className="sync-carousel-wrapper">
+          <button className="nav-btn-sync prev" onClick={() => handleScroll(scrollRefBestSeller, "left")}>
+            {"<"}
+          </button>
+          <div className="sync-card-list" ref={scrollRefBestSeller}>
+            {bestSellers.map((p, index) => (
+              <div key={`best-${p.id}`} className="sync-card">
+                <div className="sync-img-box">
+                  <img src={p.image} alt="product" />
+                  <span className="sync-badge red-badge">Top {index + 1}</span>
+                </div>
+                <div className="sync-info">
+                  <b className="price-now">{p.newPrice?.toLocaleString()}đ</b>
+                  <p className="sync-name">{p.description?.substring(0, 30)}...</p>
+                  <div className="sync-progress-box" style={{ background: "#f8d7da", height: "14px" }}>
+                    <div className="sync-progress-bar" style={{ width: "85%", background: "#2196f3" }} />
+                    <span className="sync-sold-text">Hết cực nhanh</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button className="nav-btn-sync next" onClick={() => handleScroll(scrollRefBestSeller, "right")}>
+            {">"}
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+export default Home;
