@@ -1,0 +1,151 @@
+.main-menu {
+  width: 260px;
+  background: #ddeefd;
+  padding: 12px;
+  padding-top: 24px;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  margin-left: 0;
+  margin-right: auto;
+  display: block;
+}
+
+/* HEADER */
+.main-menu__header {
+  color: #0077e6;
+  padding: 12px 16px;
+  border-radius: 18px;
+  margin: 14px 0px;
+  font-weight: bolder;
+  font-size: 20px;
+  text-align: center;
+  box-shadow: 0 6px 14px rgba(0, 132, 255, 0.25);
+}
+
+/* LIST */
+.main-menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* TAB MẶC ĐỊNH NGẮN HƠN */
+.main-menu__item {
+  width: 80%;
+  background: linear-gradient(135deg, #008cff, #0077e6);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 18px;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 132, 255, 0.15);
+}
+
+/* HOVER DÀI RA, TO HƠN, DỊCH NHẸ */
+.main-menu__item:hover,
+.main-menu__item--hover {
+  width: 88%;
+  transform: translateX(6px) scale(1.04);
+  background: linear-gradient(135deg, #0077e6, #005fcc);
+  box-shadow: 0 10px 18px rgba(0, 116, 224, 0.28);
+}
+
+/* tranh hover ghi de */
+.main-menu__item--active,
+.main-menu__item--active:hover {
+  width: 88%;
+  background: linear-gradient(135deg, #101bb6, #333faa);
+  transform: translateX(8px) scale(1.05);
+  box-shadow: 0 12px 20px rgba(0, 91, 187, 0.35);
+}
+
+.main-menu__item-label {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.main-menu__item-arrow {
+  opacity: 0; /* Ẩn mặc định */
+  transform: translateX(-5px); /* hơi lùi vào */
+  transition: all 0.3s ease;
+}
+
+.main-menu__item:hover .main-menu__item-arrow,
+.main-menu__item--hover .main-menu__item-arrow,
+.main-menu__item--active .main-menu__item-arrow {
+  opacity: 1;
+  transform: translateX(0); /* trượt ra */
+}
+/* BRAND BOX */
+.main-menu__brand-box {
+  background: #fff;
+  margin-top: 18px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid #cce5ff;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+}
+
+.main-menu__brand-title {
+  background: linear-gradient(135deg, #0091ff, #0077e6);
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.main-menu__brand-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 12px;
+}
+
+.main-menu__brand-item {
+  border: 1px solid #eef4fb;
+  border-radius: 12px;
+  height: 64px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  box-sizing: border-box;
+  background: #fff;
+  transition: all 0.25s ease;
+}
+
+.main-menu__brand-item:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.main-menu__brand-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* BANNER */
+.main-menu__banner {
+  margin-top: 18px;
+  cursor: pointer;
+}
+
+.main-menu__banner-img {
+  width: 100%;
+  border-radius: 18px;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.main-menu__banner-img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}

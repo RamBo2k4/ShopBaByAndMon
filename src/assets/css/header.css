@@ -37,7 +37,7 @@ body {
 }
 
 .logo {
-  margin-left: -65px;
+  margin-left: -40px;
   margin-top: 8px;
 }
 .logo img {
@@ -59,6 +59,8 @@ body {
   outline: none;
   background-color: aliceblue;
   margin-left: 50px;
+  color: black; /* 👈 chữ */
+  caret-color: black; /* 👈 con trỏ */
 }
 
 .header-actions {
@@ -77,6 +79,7 @@ body {
   justify-content: center;
   align-items: center;
   gap: 5px;
+  outline: none;
 }
 
 .header-actions .btn-home {
@@ -84,7 +87,10 @@ body {
 }
 
 .header-actions button:hover {
-  opacity: 0.8;
+  /* opacity: 0.8; */
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 main {
   margin-top: 150px; /* 80 banner + 70 header fhgsafghd*/

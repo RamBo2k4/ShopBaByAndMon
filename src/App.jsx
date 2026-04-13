@@ -8,9 +8,10 @@ import Sale from "./pages/sale";
 import Chinhsach from "./pages/chinhsach";
 import FAQ from "./pages/FAQ";
 import Cart from "./pages/Cart";
+import ProductList from "./pages/ProductList";
 import LoginModal from "./components/LoginModal";
 import Notification from "./components/Notification";
-import ProductDetail from "./pages/ProductDetail";
+import Home from "./components/Home";
 
 function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -32,19 +33,39 @@ function App() {
   const handleLogout = () => {
     setUser(null);
   };
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  // thêm state hover tạm
+  const [previewCategory, setPreviewCategory] = useState(null);
 
   const renderPage = () => {
+    // nếu đang hover menu thì hiện ProductList tạm
+    if (previewCategory) {
+      return <ProductList category={previewCategory} />;
+    }
+
     switch (currentPage) {
       case "thongbao":
         return <Notification />;
+
       case "cart":
         return <Cart />;
+
+      case "productlist":
+        return <ProductList category={selectedCategory} />;
+
       case "faq":
         return <FAQ />;
-      case "chu":
-        return <ProductDetail />;
+
       case "chinhsach":
         return <Chinhsach />;
+
+      case "chu":
+        return <Home />;
+
+      case "sale":
+        return <Sale />;
+
       default:
         return <Sale />;
     }
@@ -60,7 +81,12 @@ function App() {
       />
 
       <div className="layout">
-        <MenuMain />
+        <MenuMain
+          onNavigate={setCurrentPage}
+          onSelectCategory={setSelectedCategory}
+          onPreviewCategory={setPreviewCategory}
+        />
+
         <div className="content">{renderPage()}</div>
       </div>
 
