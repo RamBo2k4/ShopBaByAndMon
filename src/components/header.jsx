@@ -1,24 +1,29 @@
+import { Link } from "react-router-dom";
 import "../assets/css/header.css";
 import bannerImg from "../assets/img/banner.jpg";
 import logoImg from "../assets/img/logo.jpg";
-import { Link, useNavigate } from 'react-router-dom';
-function Header({ onOpenLogin, user, onNavigate }) {
-  const navigate = useNavigate();
+
+
+function Header({ onOpenLogin, user, onNavigate, onLogout }) {
   return (
     <header className="header-wrapper">
       <div className="top-banner">
-        <Link to="/">
+        <div onClick={() => onNavigate("chu")}>
           <img src={bannerImg} alt="banner" />
-        </Link>
+        </div>
       </div>
 
       <div className="main-header">
-        <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+        <div
+          className="logo"
+          onClick={() => onNavigate("chu")}
+          style={{ cursor: "pointer" }}
+        >
           <img src={logoImg} alt="logo" />
         </div>
 
         <div className="header-actions">
-          <button className="btn-home" onClick={() => navigate('home')}>
+          <button className="btn-home" onClick={() => onNavigate("chu")}>
             <span className="icon">
               <i className="fi fi-rs-house-chimney"></i>
             </span>
@@ -31,20 +36,36 @@ function Header({ onOpenLogin, user, onNavigate }) {
         </div>
 
         <div className="header-actions">
-          <button onClick={() => navigate('cart')}>
+          <button onClick={() => onNavigate("cart")}>
             <span className="icon">🛒</span>
             <span>Giỏ hàng</span>
           </button>
 
-          <button onClick={() => navigate('thongbao')}>
+          <button onClick={() => onNavigate("thongbao")}>
             <span className="icon">🔔</span>
             <span>Thông báo</span>
           </button>
 
-          <button onClick={onOpenLogin}>
-            <span className="icon">👤</span>
-            <span>{user ? user.name : "Đăng nhập"}</span>
-          </button>
+          {user ? (
+            <button
+              onClick={() => {
+                const confirmLogout = window.confirm(
+                  "Bạn có chắc muốn đăng xuất không?"
+                );
+                if (confirmLogout) {
+                  onLogout();
+                }
+              }}
+            >
+              <span className="icon">👤</span>
+              <span>{user.fullName}</span>
+            </button>
+          ) : (
+            <button onClick={onOpenLogin}>
+              <span className="icon">👤</span>
+              <span>Đăng nhập</span>
+            </button>
+          )}
         </div>
       </div>
     </header>
