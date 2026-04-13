@@ -17,8 +17,8 @@
   padding: 12px 16px;
   border-radius: 18px;
   margin: 14px 0px;
-  font-weight: bold;
-  font-size: 19px;
+  font-weight: bolder;
+  font-size: 20px;
   text-align: center;
   box-shadow: 0 6px 14px rgba(0, 132, 255, 0.25);
 }
@@ -28,10 +28,6 @@
   align-items: center;
   gap: 8px;
 } */
-
-.main-menu__header-icon {
-  font-size: 16px;
-}
 
 .main-menu__header-arrow {
   font-size: 14px;
@@ -55,7 +51,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  font-size: 17px;
+  font-size: 18px;
   text-align: center;
   transition: all 0.3s ease;
   box-shadow: 0 4px 10px rgba(0, 132, 255, 0.15);

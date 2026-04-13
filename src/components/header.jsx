@@ -11,7 +11,7 @@ function Header({ onOpenLogin, user, onNavigate }) {
 
       <div className="main-header">
         <div className="logo">
-          <img src="../src/assets/img/logo.jpg" alt="logo" />
+          <img src="../src/assets/img/logo_new.png" alt="logo" />
         </div>
 
         <div className="header-actions">
