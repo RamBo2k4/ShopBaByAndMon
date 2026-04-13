@@ -29,11 +29,17 @@ function App() {
   };
 
   const [currentPage, setCurrentPage] = useState("sale");
-
-  // ✅ THÊM: lưu category được chọn từ Menu
   const [selectedCategory, setSelectedCategory] = useState("all");
 
+  // thêm state hover tạm
+  const [previewCategory, setPreviewCategory] = useState(null);
+
   const renderPage = () => {
+    // nếu đang hover menu thì hiện ProductList tạm
+    if (previewCategory) {
+      return <ProductList category={previewCategory} />;
+    }
+
     switch (currentPage) {
       case "thongbao":
         return <Notification />;
@@ -41,7 +47,6 @@ function App() {
       case "cart":
         return <Cart />;
 
-      // ✅ THÊM: bật lại productlist và truyền category
       case "productlist":
         return <ProductList category={selectedCategory} />;
 
@@ -54,7 +59,6 @@ function App() {
       case "sale":
         return <Sale />;
 
-      // ❌ SỬA: default nên về sale (trước bạn để ProductList là sai logic)
       default:
         return <Sale />;
     }
@@ -69,10 +73,10 @@ function App() {
       />
 
       <div className="layout">
-        {/* ✅ SỬA: truyền 2 props xuống MenuMain */}
         <MenuMain
           onNavigate={setCurrentPage}
           onSelectCategory={setSelectedCategory}
+          onPreviewCategory={setPreviewCategory}
         />
 
         <div className="content">{renderPage()}</div>
