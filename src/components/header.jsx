@@ -2,7 +2,7 @@ import "../assets/css/header.css";
 import bannerImg from "../assets/img/banner.jpg";
 import logoImg from "../assets/img/logo.jpg";
 
-function Header({ onOpenLogin, user, onNavigate }) {
+function Header({ onOpenLogin, user, onNavigate, onLogout }) {
   return (
     <header className="header-wrapper">
       <div className="top-banner">
@@ -12,12 +12,16 @@ function Header({ onOpenLogin, user, onNavigate }) {
       </div>
 
       <div className="main-header">
-        <div className="logo" onClick={() => onNavigate('sale')} style={{cursor: 'pointer'}}>
+        <div
+          className="logo"
+          onClick={() => onNavigate("sale")}
+          style={{ cursor: "pointer" }}
+        >
           <img src={logoImg} alt="logo" />
         </div>
 
         <div className="header-actions">
-          <button className="btn-home" onClick={() => onNavigate('sale')}>
+          <button className="btn-home" onClick={() => onNavigate("sale")}>
             <span className="icon">
               <i className="fi fi-rs-house-chimney"></i>
             </span>
@@ -30,20 +34,36 @@ function Header({ onOpenLogin, user, onNavigate }) {
         </div>
 
         <div className="header-actions">
-          <button onClick={() => onNavigate('cart')}>
+          <button onClick={() => onNavigate("cart")}>
             <span className="icon">🛒</span>
             <span>Giỏ hàng</span>
           </button>
 
-          <button onClick={() => onNavigate('thongbao')}>
+          <button onClick={() => onNavigate("thongbao")}>
             <span className="icon">🔔</span>
             <span>Thông báo</span>
           </button>
 
-          <button onClick={onOpenLogin}>
-            <span className="icon">👤</span>
-            <span>{user ? user.name : "Đăng nhập"}</span>
-          </button>
+          {user ? (
+            <button
+              onClick={() => {
+                const confirmLogout = window.confirm(
+                  "Bạn có chắc muốn đăng xuất không?"
+                );
+                if (confirmLogout) {
+                  onLogout();
+                }
+              }}
+            >
+              <span className="icon">👤</span>
+              <span>{user.fullName}</span>
+            </button>
+          ) : (
+            <button onClick={onOpenLogin}>
+              <span className="icon">👤</span>
+              <span>Đăng nhập</span>
+            </button>
+          )}
         </div>
       </div>
     </header>

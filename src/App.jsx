@@ -1,21 +1,20 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import './App.css'
-import Header from './components/header'
-import MenuMain from './components/MenuMain'
-import Footer from './components/Footer'
-import Sale from './pages/sale'
-import Chinhsach from './pages/chinhsach'
-import FAQ from './pages/FAQ'
-import Cart from "./pages/Cart"
-import ProductList from "./pages/ProductList"
-import ProductDetail from "./pages/ProductDetail"
-import LoginModal from "./components/LoginModal"
-import Notification from "./components/Notification"
+import "./App.css";
+import Header from "./components/header";
+import MenuMain from "./components/MenuMain";
+import Footer from "./components/Footer";
+import Sale from "./pages/sale";
+import Chinhsach from "./pages/chinhsach";
+import FAQ from "./pages/FAQ";
+import Cart from "./pages/Cart";
+import LoginModal from "./components/LoginModal";
+import Notification from "./components/Notification";
 
 function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [currentPage, setCurrentPage] = useState("sale");
 
   const handleOpenLogin = () => {
     setIsLoginOpen(true);
@@ -29,29 +28,37 @@ function App() {
     setUser(userData);
   };
 
-  const [currentPage, setCurrentPage] = useState('sale')
+  const handleLogout = () => {
+    setUser(null);
+  };
 
   const renderPage = () => {
     switch (currentPage) {
-      case 'thongbao': return <Notification />
-      case 'cart': return <Cart />
-      // case 'productlist': return <ProductList />
-      // case 'productdetail': return <ProductDetail />
-      case 'faq': return <FAQ />
-      case 'chinhsach': return <Chinhsach />
-      default: return <Sale />
+      case "thongbao":
+        return <Notification />;
+      case "cart":
+        return <Cart />;
+      case "faq":
+        return <FAQ />;
+      case "chinhsach":
+        return <Chinhsach />;
+      default:
+        return <Sale />;
     }
-  }
+  };
 
   return (
     <div className="app">
-      <Header onOpenLogin={handleOpenLogin} user={user} onNavigate={setCurrentPage} />
+      <Header
+        onOpenLogin={handleOpenLogin}
+        user={user}
+        onNavigate={setCurrentPage}
+        onLogout={handleLogout}
+      />
+
       <div className="layout">
         <MenuMain />
-
-        <div className="content">
-          {renderPage()}
-        </div>
+        <div className="content">{renderPage()}</div>
       </div>
 
       <Footer onNavigate={setCurrentPage} />
@@ -65,4 +72,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

@@ -6,6 +6,7 @@ function LoginModal({ isOpen, onClose, onLogin }) {
   const [isRegisterMode, setIsRegisterMode] = useState(false);
 
   const [formData, setFormData] = useState({
+    fullName: "",
     phone: "",
     password: "",
     confirmPassword: "",
@@ -13,6 +14,30 @@ function LoginModal({ isOpen, onClose, onLogin }) {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const API = "http://localhost:5000";
+
+  const loginUser = async (phone, password) => {
+    const res = await fetch(API + "/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ phone, password }),
+    });
+    return await res.json();
+  };
+
+  const registerUser = async (fullName, phone, password) => {
+    const res = await fetch(API + "/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fullName, phone, password }),
+    });
+    return await res.json();
+  };
 
   if (!isOpen) return null;
 
@@ -26,6 +51,7 @@ function LoginModal({ isOpen, onClose, onLogin }) {
 
   const resetForm = () => {
     setFormData({
+      fullName: "",
       phone: "",
       password: "",
       confirmPassword: "",
@@ -39,30 +65,47 @@ function LoginModal({ isOpen, onClose, onLogin }) {
     resetForm();
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
-    if (!formData.phone.trim() || !formData.password.trim()) {
+    if (!formData.phone || !formData.password) {
       setError("Vui lòng nhập đầy đủ thông tin.");
       return;
     }
 
     if (isRegisterMode) {
-      if (!formData.confirmPassword.trim()) {
+      if (!formData.fullName) {
+        setError("Vui lòng nhập họ tên.");
+        return;
+      }
+
+      if (!formData.confirmPassword) {
         setError("Vui lòng nhập lại mật khẩu.");
         return;
       }
 
       if (formData.password !== formData.confirmPassword) {
-        setError("Mật khẩu nhập lại không khớp.");
+        setError("Mật khẩu không khớp.");
         return;
       }
 
-      setSuccess("Đăng kí thành công giả lập. Bạn có thể đăng nhập.");
+      const res = await registerUser(
+        formData.fullName,
+        formData.phone,
+        formData.password
+      );
+
+      if (!res.success) {
+        setError(res.message);
+        return;
+      }
+
+      setSuccess("Đăng kí thành công");
       setIsRegisterMode(false);
       setFormData({
+        fullName: "",
         phone: formData.phone,
         password: "",
         confirmPassword: "",
@@ -70,14 +113,16 @@ function LoginModal({ isOpen, onClose, onLogin }) {
       return;
     }
 
-    if (formData.phone === "0123456789" && formData.password === "123456") {
-      setSuccess("");
-      onLogin({ phone: formData.phone });
-      onClose();
-      resetForm();
-    } else {
-      setError("Sai số điện thoại hoặc mật khẩu.");
+    const res = await loginUser(formData.phone, formData.password);
+
+    if (!res.success) {
+      setError(res.message);
+      return;
     }
+
+    onLogin(res.user);
+    onClose();
+    resetForm();
   };
 
   const handleOverlayClick = (e) => {
@@ -91,9 +136,9 @@ function LoginModal({ isOpen, onClose, onLogin }) {
   return (
     <div className="login-modal-overlay" onClick={handleOverlayClick}>
       <div className="login-modal-box">
-         <button className="login-close-btn" onClick={onClose}>
-        ×
-      </button>
+        <button className="login-close-btn" onClick={onClose}>
+          ×
+        </button>
 
         <div className="login-left">
           <img src={loginImg} alt="login" className="login-image" />
@@ -103,6 +148,19 @@ function LoginModal({ isOpen, onClose, onLogin }) {
           <h2>{isRegisterMode ? "Đăng kí" : "Đăng nhập"}</h2>
 
           <form onSubmit={handleSubmit} className="login-form">
+            {isRegisterMode && (
+              <>
+                <label>Họ tên:</label>
+                <input
+                  type="text"
+                  name="fullName"
+                  placeholder="Nhập họ tên"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                />
+              </>
+            )}
+
             <label>Số điện thoại:</label>
             <input
               type="text"
@@ -134,9 +192,7 @@ function LoginModal({ isOpen, onClose, onLogin }) {
               </>
             )}
 
-            {!isRegisterMode && (
-              <p className="forgot-text">Quên mật khẩu?</p>
-            )}
+            {!isRegisterMode && <p className="forgot-text">Quên mật khẩu?</p>}
 
             {error && <p className="login-error">{error}</p>}
             {success && <p className="login-success">{success}</p>}
