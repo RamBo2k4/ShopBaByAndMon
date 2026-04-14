@@ -1,197 +1,134 @@
-/* --- CSS GỐC CỦA BẠN --- */
-body {
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 0; }
 
 .header-wrapper {
-  position: fixed; /* dính trên cùng màn hình */
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 9999; /* nổi trên mọi thứ */
-  font-family: Arial, Helvetica, sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    font-family: Arial, sans-serif;
 }
 
-.top-banner {
-  width: 100%;
-  height: 80px;
-  overflow: hidden;
-}
-
-.top-banner img,
-.top-banner video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.top-banner { width: 100%; height: 80px; overflow: hidden; }
+.top-banner img { width: 100%; height: 100%; object-fit: cover; }
 
 .main-header {
-  width: 100%;
-  height: 90px;
-  background: #339be5;
-  display: flex;
-  align-items: center;
-  padding: 0 40px;
-  gap: 20px;
-  box-sizing: border-box;
+    width: 100%;
+    height: 90px;
+    background: #339be5;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    gap: 15px;
 }
 
-.logo {
-  margin-left: -40px;
-  margin-top: 0px;
-}
-.logo img {
-  height: 91px;
-  border-radius: 0 50px 50px 0;
-}
+.logo img { height: 90px; border-radius: 0 50px 50px 0; margin-left: -40px; }
 
-.search-box {
-  flex: 1;
-}
+/* SEARCH BOX */
+.search-box { flex: 1; }
+.search-input-wrapper { position: relative; width: 90%; margin-left: 30px; }
 
 .search-box input {
-  width: 80%;
-  height: 50px;
-  border-radius: 999px;
-  border: none;
-  padding: 0 20px;
-  font-size: 15px;
-  outline: none;
-  background-color: aliceblue;
-  margin-left: 50px;
-  color: black;
-  caret-color: black;
+    width: 100%;
+    height: 46px;
+    border-radius: 25px;
+    border: 2px solid transparent;
+    padding: 0 25px;
+    font-size: 15px;
+    outline: none;
+    background-color: #f8f9fa;
+    color: #333; /* Chữ nhập vào màu đen xám */
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
-.header-actions {
-  display: flex;
-  gap: 20px;
-  align-items: center; /* Đảm bảo các nút căn giữa theo chiều dọc */
+.search-box input:focus {
+    background-color: #fff;
+    border-color: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-.header-actions button, 
-.user-info-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 17px; /* Chỉnh nhỏ lại một chút để vừa tên dài */
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  outline: none;
-  padding: 8px 12px;
-  transition: all 0.3s ease;
-  border-radius: 8px;
+.search-box input::placeholder { color: #999; font-style: italic; }
+
+/* SEARCH DROPDOWN */
+.search-results-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 10000;
+    overflow: hidden;
+    animation: slideDown 0.2s ease-out;
 }
 
-.header-actions .btn-home {
-  margin-left: 50px;
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.header-actions button:hover,
-.user-info-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
+.search-item-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: #333;
+    border-bottom: 1px solid #f1f1f1;
 }
 
-main {
-  margin-top: 170px; /* 80 banner + 90 header */
+.search-item-link:hover { background-color: #f0f7ff; }
+
+.search-item-link img { width: 45px; height: 45px; object-fit: cover; border-radius: 6px; margin-right: 15px; }
+
+.search-item-name { margin: 0; font-size: 14px; font-weight: 600; color: #2c3e50; }
+.search-item-price { margin: 0; font-size: 13px; color: #ff424e; font-weight: bold; }
+
+.search-view-all {
+    padding: 10px;
+    text-align: center;
+    font-size: 13px;
+    color: #339be5;
+    background: #f8f9fa;
+    cursor: pointer;
+    font-weight: bold;
 }
 
-/* --- CSS BỔ SUNG CHO DROPDOWN LOGOUT --- */
-
-.user-menu-container {
-  position: relative;
-  display: inline-block;
+/* ACTIONS & BUTTONS */
+.header-actions { display: flex; gap: 15px; align-items: center; }
+.header-actions button {
+    background: none; border: none; color: white;
+    font-size: 16px; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 4px; padding: 8px 10px; transition: 0.3s;
 }
 
+.header-actions button:hover { background: rgba(255, 255, 255, 0.1); border-radius: 8px; }
+
+/* BADGE GIỎ HÀNG */
+.cart-badge-count {
+    position: absolute; top: 2px; right: 12px;
+    background: #ff424e; color: white;
+    font-size: 10px; font-weight: bold;
+    min-width: 18px; height: 18px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    border: 2px solid #339be5;
+}
+
+/* USER MENU */
+.user-menu-container { position: relative; }
 .dropdown-content {
-  display: block; /* Luôn là block vì việc ẩn/hiện đã do React quản lý */
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: white;
-  min-width: 180px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-  z-index: 10000;
-  border-radius: 8px;
-  margin-top: 10px; /* Khoảng cách với nút bấm */
-  overflow: hidden;
-  border: 1px solid #ddd;
-  animation: fadeIn 0.2s ease-out; /* Thêm hiệu ứng hiện ra cho mượt */
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+    position: absolute; top: 110%; right: 0;
+    background: white; min-width: 180px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 8px; overflow: hidden;
 }
 
 .dropdown-item {
-  color: #333 !important;
-  padding: 12px 16px;
-  display: flex !important; /* Đổi thành flex để căn chỉnh text */
-  flex-direction: row !important;
-  align-items: center;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.2s;
-  width: 100%;
-  border: none;
-  background: none;
+    color: #333 !important; padding: 12px 16px;
+    display: block; text-decoration: none; font-size: 14px;
 }
-
-.dropdown-item:hover {
-  background-color: #f5f5f5;
-}
-
-.logout-btn {
-  color: #d9534f !important;
-  font-weight: bold;
-}
-
-.user-name {
-  font-weight: bold;
-  max-width: 120px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; /* Nếu tên quá dài sẽ có dấu ... */
-}
-
-/* --- Bổ sung cho Link --- */
-
-/* Loại bỏ gạch chân và màu xanh mặc định của thẻ Link */
-.nav-link-item, 
-.logo, 
-.dropdown-item {
-  text-decoration: none; 
-  color: inherit; /* Lấy màu trắng từ button hoặc màu đen từ dropdown */
-  display: flex;
-  align-items: center;
-}
-
-/* Đảm bảo khi bọc Link ngoài Button thì Button không bị lệch */
-.nav-link-item button {
-  cursor: pointer;
-  width: 100%;
-}
-
-/* Reset riêng cho logo để không có viền hay gạch chân */
-.logo {
-  outline: none;
-}
-
-/* Đảm bảo các link trong dropdown có màu tối */
-.dropdown-content .dropdown-item {
-  color: #333 !important;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.dropdown-item:hover {
-  background-color: #f5f5f5;
-}
+.dropdown-item:hover { background: #f5f5f5; }
+.logout-btn { color: #d9534f !important; font-weight: bold; cursor: pointer; }

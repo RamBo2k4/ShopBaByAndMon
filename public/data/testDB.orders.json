@@ -1,0 +1,148 @@
+[{
+  "_id": {
+    "$oid": "69deae733d5c3a528ec3eb68"
+  },
+  "userPhone": "0773880668",
+  "userName": "Đoàn Thị Thảo Nguyên",
+  "address": {
+    "fullName": "a",
+    "phone": "a",
+    "address": "a",
+    "city": "a"
+  },
+  "items": [
+    {
+      "id": 7,
+      "name": "Khăn ướt Huggies không mùi (Gói 80 tờ)",
+      "price": 85500,
+      "quantity": 1,
+      "image": "/img/huggies-wet.jpg"
+    }
+  ],
+  "total": 85500,
+  "status": "Đã giao",
+  "orderDate": {
+    "$date": "2026-04-14T21:15:31.761Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69deaf9e0cac073d7d4c809d"
+  },
+  "userPhone": "0773880668",
+  "userName": "Đoàn Thị Thảo Nguyên",
+  "address": {
+    "fullName": "a",
+    "phone": "a",
+    "address": "a"
+  },
+  "items": [
+    {
+      "id": 4,
+      "name": "Sữa chua uống Susu vị cam thùng 24 chai",
+      "price": 288000,
+      "quantity": 1,
+      "image": "/img/susu.jpg",
+      "_id": {
+        "$oid": "69deaf9e0cac073d7d4c809e"
+      }
+    }
+  ],
+  "total": 288000,
+  "status": "Đã hủy",
+  "orderDate": {
+    "$date": "2026-04-14T21:20:30.463Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69deb0f68ecb849d2efe7c9c"
+  },
+  "userPhone": "0773880668",
+  "userName": "Đoàn Thị Thảo Nguyên",
+  "address": {
+    "fullName": "a",
+    "phone": "a",
+    "address": "a"
+  },
+  "items": [
+    {
+      "id": 19,
+      "name": "Khẩu trang 3D kháng khuẩn cho bé từ 1-3 tuổi",
+      "price": 55000,
+      "quantity": 1,
+      "image": "/img/khau-trang.jpg",
+      "_id": {
+        "$oid": "69deb0f68ecb849d2efe7c9d"
+      }
+    }
+  ],
+  "total": 55000,
+  "status": "Đang giao",
+  "orderDate": {
+    "$date": "2026-04-14T21:26:14.378Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69deb29ffe4e79eec17fca38"
+  },
+  "userPhone": "0773880668",
+  "userName": "Đoàn Thị Thảo Nguyên",
+  "address": {
+    "fullName": "a",
+    "phone": "a",
+    "address": "a"
+  },
+  "items": [
+    {
+      "id": 3,
+      "name": "Bộ đồ chơi xếp hình Lego Classic sáng tạo cho bé",
+      "price": 125000,
+      "quantity": 1,
+      "image": "/img/lego.jpg",
+      "_id": {
+        "$oid": "69deb29ffe4e79eec17fca39"
+      }
+    }
+  ],
+  "total": 125000,
+  "status": "Đang chuẩn bị",
+  "orderDate": {
+    "$date": "2026-04-14T21:33:19.754Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69deb6a3c0f0d794d53b4581"
+  },
+  "userPhone": "0773880668",
+  "userName": "Đoàn Thị Thảo Nguyên",
+  "address": {
+    "fullName": "a",
+    "phone": "a",
+    "address": "a"
+  },
+  "items": [
+    {
+      "id": 7,
+      "name": "Khăn ướt Huggies không mùi (Gói 80 tờ)",
+      "price": 85500,
+      "quantity": 1,
+      "image": "/img/huggies-wet.jpg",
+      "_id": {
+        "$oid": "69deb6a3c0f0d794d53b4582"
+      }
+    }
+  ],
+  "total": 85500,
+  "status": "Chờ xác nhận",
+  "orderDate": {
+    "$date": "2026-04-14T21:50:27.891Z"
+  },
+  "__v": 0
+}]

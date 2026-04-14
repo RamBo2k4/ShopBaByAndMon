@@ -1,0 +1,70 @@
+[{
+  "_id": {
+    "$oid": "69deb678c0f0d794d53b457c"
+  },
+  "userPhone": "0773880668",
+  "title": "Cập nhật đơn hàng #7FCA38",
+  "desc": "Đơn hàng của bạn đang ở trạng thái: Đang chuẩn bị",
+  "type": "order",
+  "isRead": false,
+  "createdAt": {
+    "$date": "2026-04-14T21:33:19.754Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69deb678c0f0d794d53b457d"
+  },
+  "userPhone": "0773880668",
+  "title": "Cập nhật đơn hàng #FE7C9C",
+  "desc": "Đơn hàng của bạn đang ở trạng thái: Đang giao",
+  "type": "order",
+  "isRead": false,
+  "createdAt": {
+    "$date": "2026-04-14T21:26:14.378Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69deb678c0f0d794d53b457e"
+  },
+  "userPhone": "0773880668",
+  "title": "Cập nhật đơn hàng #4C809D",
+  "desc": "Đơn hàng của bạn đang ở trạng thái: Đã hủy",
+  "type": "order",
+  "isRead": false,
+  "createdAt": {
+    "$date": "2026-04-14T21:20:30.463Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69deb678c0f0d794d53b457f"
+  },
+  "userPhone": "0773880668",
+  "title": "Cập nhật đơn hàng #C3EB68",
+  "desc": "Đơn hàng của bạn đang ở trạng thái: Đã giao",
+  "type": "order",
+  "isRead": true,
+  "createdAt": {
+    "$date": "2026-04-14T21:15:31.761Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69deb6a3c0f0d794d53b4583"
+  },
+  "userPhone": "0773880668",
+  "title": "Đặt hàng thành công! 🎉",
+  "desc": "Đơn hàng #3b4581 của bạn đã được xác nhận và đang chờ xử lý.",
+  "type": "order",
+  "isRead": true,
+  "createdAt": {
+    "$date": "2026-04-14T21:50:27.895Z"
+  },
+  "__v": 0
+}]

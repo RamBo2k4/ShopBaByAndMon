@@ -11,6 +11,7 @@ import FAQ from "./pages/FAQ";
 import Cart from "./pages/Cart";
 import ProductList_nha from "./pages/ProductList";
 import ProductList_nam from "./components/ProductList";
+import ProductDetail from "./pages/ProductDetail"; // 👉 Bước 1: Import trang chi tiết
 import LoginModal from "./components/LoginModal";
 import Notification from "./components/Notification";
 import Home from "./components/Home";
@@ -27,7 +28,7 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [previewCategory, setPreviewCategory] = useState(null);
 
-  // 2. Hiệu ứng đồng bộ với MongoDB
+  // 2. Hiệu ứng đồng bộ với MongoDB khi load trang
   useEffect(() => {
     const syncUserWithDB = async () => {
       // Chỉ fetch nếu user đã đăng nhập và có _id trong localStorage
@@ -48,7 +49,6 @@ function App() {
     };
 
     syncUserWithDB();
-    // Chạy 1 lần duy nhất khi load App hoặc khi user thay đổi (đăng nhập/đăng xuất)
   }, []); 
 
   const handleOpenLogin = () => setIsLoginOpen(true);
@@ -83,16 +83,33 @@ function App() {
 
           <div className="content">
             <Routes>
+              {/* Trang chủ */}
               <Route path="/" element={<Home />} />
               <Route path="/chu" element={<Home />} />
+              
+              {/* Trang khuyến mãi & Thông báo */}
               <Route path="/sale" element={<Sale />} />
               <Route path="/thongbao" element={<Notification />} />
+              
+              <Route path="/search" element={<ProductList_nha />} />
+              {/* Trang danh sách sản phẩm theo danh mục (slug) */}
               <Route path="/collection/:slug" element={<ProductList_nha />} /> 
               <Route path="/special/:slug" element={<ProductList_nam />} />
+              
+              {/* 👉 Bước 2: Route chi tiết sản phẩm (Dùng tham số :id) */}
+              <Route path="/product/:id" element={<ProductDetail />} />
+
+              {/* Giỏ hàng */}
               <Route path="/cart" element={<Cart />} />
+              {/* Sale & Thông báo */}
+              <Route path="/sale" element={<Sale onOpenLogin={handleOpenLogin} />} />
+              
+              {/* Chính sách & FAQ */}
               <Route path="/faq" element={<FAQ />} />
               <Route path="/chinhsach" element={<Chinhsach />} />
-              <Route path="*" element={<Navigate to="/sale" />} />
+              
+              {/* Nếu link sai, tự động về trang Sale */}
+              <Route path="*" element={<Navigate to="/thongbao" />} />
             </Routes>
           </div>
         </div>

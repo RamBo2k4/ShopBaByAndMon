@@ -1,137 +1,157 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import NotificationModal from "../components/NotificationModal"; // Đảm bảo đã import
 import "../assets/css/productDetail.css";
 
-import dielacMain from "../assets/img/dielac-main.jpg";
-import dielac1 from "../assets/img/dielac-1.jpg";
-import dielac2 from "../assets/img/dielac-2.jpg";
-import dielac3 from "../assets/img/dielac-3.jpg";
-import dielac4 from "../assets/img/dielac-4.jpg";
-import dielac5 from "../assets/img/dielac-5.jpg";
-import dielac6 from "../assets/img/dielac-6.jpg";
-
 function ProductDetail() {
-  const productImages = [
-    dielac1,
-    dielac2,
-    dielac3,
-    dielac4,
-    dielac5,
-    dielac6,
-  ];
+  const { id } = useParams();
+  const navigate = useNavigate();
+  
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);
+  const [showNotif, setShowNotif] = useState(false);
 
-  const variants = [
-    {
-      id: 1,
-      weight: "400gr",
-      price: "360.000 VND",
-      image: dielac1,
-    },
-    {
-      id: 2,
-      weight: "800gr",
-      price: "720.000 VND",
-      image: dielacMain,
-    },
-  ];
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`http://localhost:5000/api/products/${id}`);
+        if (res.ok) {
+          const data = await res.json();
+          setProduct(data);
+        }
+      } catch (err) {
+        console.error("Lỗi fetch sản phẩm:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+  }, [id]);
 
-  const [mainImage, setMainImage] = useState(dielacMain);
-  const [selectedVariant, setSelectedVariant] = useState(variants[0]);
-
-  const handleSelectVariant = (variant) => {
-    setSelectedVariant(variant);
-    setMainImage(variant.image);
+  const handleQuantity = (type) => {
+    if (type === "plus") setQuantity(prev => prev + 1);
+    else if (type === "minus" && quantity > 1) setQuantity(prev => prev - 1);
   };
 
-  const handleThumbnailClick = (image) => {
-    setMainImage(image);
+  const handleAddToCart = async () => {
+    const rawUser = localStorage.getItem("user");
+    if (!rawUser) {
+      alert("Vui lòng đăng nhập để thực hiện tính năng này!");
+      return;
+    }
+    const user = JSON.parse(rawUser);
+
+    const payload = {
+      userPhone: user.phone,
+      userName: user.fullName,
+      item: {
+        id: product.id,
+        name: product.description,
+        price: product.newPrice,
+        quantity: quantity,
+        image: product.image
+      }
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/api/cart/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        setShowNotif(true); // Kích hoạt hiện Modal
+        window.dispatchEvent(new Event("cartUpdated"));
+      }
+    } catch (err) {
+      console.error("Lỗi thêm giỏ hàng:", err);
+    }
   };
+
+  if (loading) return <div className="loading-state">✨ Đang tải sản phẩm...</div>;
+  if (!product) return <div className="error-state">Sản phẩm không tồn tại</div>;
 
   return (
-    <div className="product-detail-content">
-      <div className="breadcrumb">Các loại sữa &gt; Chi tiết sản phẩm</div>
+    <div className="product-detail-layout">
+      {/* 👉 QUAN TRỌNG: Phải đặt Component Modal ở đây */}
+      <NotificationModal 
+        isOpen={showNotif}
+        type="success"
+        title="Thêm thành công!"
+        message={`Sản phẩm "${product.description}" đã nằm trong giỏ hàng.`}
+        onClose={() => setShowNotif(false)}
+        onAction={() => navigate("/cart")}
+      />
 
-      <div className="product-top">
-        <div className="product-image-box">
-          <img
-            src={mainImage}
-            alt="Sữa bột Dielac Alpha Gold"
-            className="main-product-image"
-          />
-          {/* <button className="zoom-btn">🔍</button> */}
+      <div className="detail-container">
+        {/* Breadcrumb */}
+        <div className="breadcrumb-wrapper">
+          <div className="breadcrumb-links">
+            <span className="b-link" onClick={() => navigate("/")}>Trang chủ</span>
+            <span className="b-sep">/</span>
+            <span className="b-link active">{product.category}</span>
+            <span className="b-sep">/</span>
+            <span className="b-text">Chi tiết</span>
+          </div>
+          <span className="b-back-end" onClick={() => navigate(-1)}>Quay lại ⬅</span>
         </div>
 
-        <div className="product-info-box">
-          <h1 className="product-price">{selectedVariant.price}</h1>
+        <div className="product-main-section">
+          {/* Panel Ảnh */}
+          <div className="image-panel">
+            <div className="image-card">
+              <img src={product.image} alt={product.name} />
+            </div>
+          </div>
 
-          <h2 className="product-title">
-            Sữa bột Dielac Alpha Gold 800gr
-            <br />
-            (6-12 tháng)
-          </h2>
-
-          <p className="sold-count">Đã bán 3.6k</p>
-
-          <div className="variant-list">
-            {variants.map((variant) => (
-              <div
-                key={variant.id}
-                className={
-                  selectedVariant.id === variant.id
-                    ? "variant-card active"
-                    : "variant-card"
-                }
-                onClick={() => handleSelectVariant(variant)}
-              >
-                <img src={variant.image} alt={variant.weight} />
-                <p className="variant-weight">{variant.weight}</p>
-                <p className="variant-price">{variant.price}</p>
+          {/* Panel Thông tin */}
+          <div className="info-panel">
+            <div className="info-content">
+              <div className="stars">{"⭐".repeat(product.rating || 5)}</div>
+              <h1 className="p-title">{product.description}</h1>
+              
+              <div className="p-price-box">
+                <span className="current-price">{product.newPrice?.toLocaleString()} VND</span>
+                <span className="old-price">{product.oldPrice?.toLocaleString()} VND</span>
               </div>
-            ))}
-          </div>
 
-          <button className="add-cart-btn">Thêm vào giỏ hàng</button>
-        </div>
-      </div>
+              <div className="status-tag">Còn hàng</div>
 
-      <div className="thumbnail-list">
-        {productImages.map((image, index) => (
-          <div
-            className="thumb-item"
-            key={index}
-            onClick={() => handleThumbnailClick(image)}
-          >
-            <img src={image} alt={`thumb-${index}`} />
-          </div>
-        ))}
-      </div>
+              <div className="purchase-actions">
+                <div className="quantity-selector">
+                  <button onClick={() => handleQuantity("minus")} style={{color:"black"}}>-</button>
+                  <input type="text" value={quantity} readOnly />
+                  <button onClick={() => handleQuantity("plus")}style={{color:"black"}}>+</button>
+                </div>
+                <button className="p-add-cart-btn" onClick={handleAddToCart}>
+                  <i className="fi fi-rr-shopping-cart-add"></i> THÊM VÀO GIỎ HÀNG
+                </button>
+              </div>
 
-      <div className="product-bottom">
-        <div className="detail-info-box">
-          <h3>Thông tin chi tiết</h3>
-
-          <div className="detail-content">
-            <p><strong>Đặc điểm nổi bật</strong></p>
-            <ul>
-              <li>Bổ sung DHA hỗ trợ phát triển trí não</li>
-              <li>Có Omega 3 hỗ trợ phát triển toàn diện</li>
-              <li>Tăng cường hấp thu dưỡng chất</li>
-              <li>Có canxi giúp xương thêm chắc khỏe</li>
-            </ul>
-
-            <p><strong>Nơi sản xuất</strong></p>
-            <ul>
-              <li>Việt Nam</li>
-            </ul>
-
-            <p>Ngày sản xuất: 03/06/2018</p>
-            <p>Hạn sử dụng: dùng 12 tháng từ khi mở nắp</p>
+              <div className="p-footer-back">
+                <span>Bạn muốn tìm sản phẩm khác? <u onClick={() => navigate(-1)}>Quay lại</u></span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="policy-box">
-          <p>100% sản phẩm chính hãng</p>
-          <p>1 đổi 1 trong vòng 1 tháng</p>
-          <p>Miễn phí vận chuyển</p>
+        {/* Khối dưới */}
+        <div className="product-bottom-section">
+          <div className="desc-card">
+            <h3>Mô tả sản phẩm</h3>
+            <p className="desc-text">
+              {product.description}. Sản phẩm chất lượng cao, an toàn tuyệt đối cho bé yêu.
+            </p>
+          </div>
+
+          <div className="policy-sidebar">
+            <div className="policy-card-item">🛡️ Bảo hành chính hãng</div>
+            <div className="policy-card-item">🚚 Miễn phí vận chuyển</div>
+            <div className="policy-card-item">🔄 Đổi trả trong 7 ngày</div>
+          </div>
         </div>
       </div>
     </div>
