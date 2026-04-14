@@ -1,16 +1,19 @@
 .app {
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   min-height: 100vh;
 }
 
-.layout {
-  display: flex;
-  flex: 1;
-  margin-top: 150px;
-}
-
 .content {
   flex: 1;
-  background: #f1f2f5;
+  width: 100%;
+  padding: 0;      /* Đảm bảo không có khoảng cách đệm */
+  margin: 0;       /* Đảm bảo không có lề */
+  overflow-x: hidden;
+}
+
+.layout {
+  display: flex;
+  margin-top: 170px; /* Khớp với tổng chiều cao Header + Banner */
+  gap: 0;            /* Khoảng cách giữa Menu và Content bằng 0 */
 }

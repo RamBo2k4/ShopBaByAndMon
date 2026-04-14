@@ -7,39 +7,56 @@ import ProductGrid from "./ProductGrid";
 import { getCollectionConfig, matchesAgeFilter } from "../utils/collectionConfig";
 
 function ProductList() {
-  const { type } = useParams();
+  const { type } = useParams(); // 'type' ở đây tương đương với 'slug' hoặc 'category'
   const [products, setProducts] = useState([]);
   const [activeAge, setActiveAge] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/product.json")
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.error("Lỗi tải danh sách sản phẩm:", err));
-  }, []);
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        // Gọi API lấy sản phẩm theo category (type)
+        const response = await fetch(`http://localhost:5000/api/products?category=${type}`);
+        if (response.ok) {
+          const data = await response.json();
+          setProducts(data);
+        }
+      } catch (err) {
+        console.error("Lỗi tải danh sách sản phẩm từ MongoDB:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [type]); // Load lại khi đổi loại sản phẩm trên URL
 
   const currentCollection = getCollectionConfig(type);
 
-  const collectionProducts = useMemo(
-    () => currentCollection.filter(products),
-    [currentCollection, products]
-  );
+  // Lọc theo độ tuổi (Dùng useMemo để tối ưu hiệu năng khi user bấm chuyển các nút Age)
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => matchesAgeFilter(product.age, activeAge));
+  }, [activeAge, products]);
 
-  const filteredProducts = useMemo(
-    () => collectionProducts.filter((product) => matchesAgeFilter(product.age, activeAge)),
-    [activeAge, collectionProducts]
-  );
+  if (loading) return <div style={{ textAlign: "center", padding: "50px" }}>Đang tải...</div>;
 
   return (
     <main className="product-list">
       <div className="product-list-header">
-        <h2>{currentCollection.title}</h2>
-        <p>{filteredProducts.length} sản phẩm</p>
+        <h2 style={{ color: "black", fontWeight: "bold" }}>{currentCollection.title}</h2>
+        <p style={{ color: "#666" }}>{filteredProducts.length} sản phẩm</p>
       </div>
 
       <AgeFilterBar activeAge={activeAge} setActiveAge={setActiveAge} />
 
-      <ProductGrid products={filteredProducts} />
+      {filteredProducts.length > 0 ? (
+        <ProductGrid products={filteredProducts} />
+      ) : (
+        <div style={{ textAlign: "center", padding: "50px", color: "#999" }}>
+          Không có sản phẩm nào phù hợp với lứa tuổi này.
+        </div>
+      )}
     </main>
   );
 }

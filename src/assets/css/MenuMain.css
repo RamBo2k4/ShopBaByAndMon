@@ -1,5 +1,6 @@
 .main-menu {
-  width: 260px;
+  min-width: 260px;
+  max-width: 480px;
   background: #ddeefd;
   padding: 12px;
   padding-top: 24px;

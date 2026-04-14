@@ -1,88 +1,160 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Voucher from "../components/voucher";
+
+// Import hình ảnh tài nguyên
 import bannerImg from "../assets/img/banner_sale.jpg";
 import logoImg from "../assets/img/logo.jpg";
 
+/**
+ * COMPONENT: Sale (Trang khuyến mãi)
+ * Chức năng: Hiển thị danh sách Voucher và cho phép người dùng thu thập mã vào tài khoản.
+ */
 function Sale() {
-  const bannerStyle = {
-    width: "100%",
-    aspectRatio: "400 / 168",
-    objectFit: "cover",
-    borderRadius: "20px",
-    marginBottom: "25px",
-  };
+  const navigate = useNavigate();
 
-  const gridStyle = {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, 1fr)",
-    gap: "30px",
-  };
+  // --- QUẢN LÝ STATE ---
+  const [vouchers, setVouchers] = useState([]);       // Danh sách tất cả voucher hệ thống
+  const [savedVouchers, setSavedVouchers] = useState([]); // Danh sách mã code user đã lưu
+  const [loading, setLoading] = useState(true);        // Trạng thái chờ tải dữ liệu
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Trạng thái đăng nhập
 
-  const [savedVouchers, setSavedVouchers] = useState([]);
-
-  const voucherList = [
-    {
-      code: "SALE36A",
-      title: "Giảm 36% tối đa 100k",
-      minOrder: 360000,
-      used: 68,
-      expire: "01/28",
-      img: logoImg,
-    },
-    {
-      code: "SALE20A",
-      title: "Giảm 20% tối đa 50k",
-      minOrder: 200000,
-      used: 40,
-      expire: "02/10",
-      img: logoImg,
-    },
-    {
-      code: "SALE36B",
-      title: "Giảm 36% tối đa 100k",
-      minOrder: 360000,
-      used: 68,
-      expire: "01/28",
-      img: logoImg,
-    },
-    {
-      code: "SALE20B",
-      title: "Giảm 20% tối đa 50k",
-      minOrder: 200000,
-      used: 40,
-      expire: "02/10",
-      img: logoImg,
-    },
-  ];
-
+  // --- FETCH DATA (Lấy dữ liệu khi vào trang) ---
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("savedVouchers") || "[]");
-    setSavedVouchers(saved);
+    // Lấy thông tin user từ localStorage để kiểm tra đăng nhập
+    const user = JSON.parse(localStorage.getItem("user"));
+    
+    const fetchData = async () => {
+      try {
+        // 1. Lấy tất cả Voucher hiện có trong database để hiển thị lên màn hình
+        const vRes = await fetch("http://localhost:5000/testDB/vourcher");
+        const vData = await vRes.json();
+        setVouchers(vData);
+
+        // 2. Nếu đã đăng nhập, lấy danh sách mã voucher user NÀY đã lưu trong DB
+        if (user && user._id) {
+          setIsLoggedIn(true);
+          const savedRes = await fetch(`http://localhost:5000/api/users/saved-vouchers/${user._id}`);
+          
+          if (savedRes.ok) {
+            const savedData = await savedRes.json(); 
+            setSavedVouchers(savedData); // Ví dụ: ["WELCOME10", "MILK20K"]
+            
+            // Cập nhật lại localStorage để các trang khác (như Giỏ hàng) dùng được ngay
+            localStorage.setItem("savedVouchers", JSON.stringify(savedData));
+          }
+        }
+      } catch (err) {
+        console.error("❌ Lỗi tải dữ liệu từ Server:", err);
+      } finally {
+        setLoading(false); // Tắt màn hình chờ
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const handleSaveVoucher = (code) => {
-    if (!code) return;
-    if (savedVouchers.includes(code)) return;
+  // --- XỬ LÝ LƯU VOUCHER ---
+  const handleSaveVoucher = async (code) => {
+    const user = JSON.parse(localStorage.getItem("user"));
 
-    const updatedSaved = [...savedVouchers, code];
-    setSavedVouchers(updatedSaved);
-    localStorage.setItem("savedVouchers", JSON.stringify(updatedSaved));
+    // Kiểm tra đăng nhập trước khi cho phép lưu
+    if (!user || !user._id) {
+      alert("⚠️ Bạn cần đăng nhập để thu thập mã giảm giá!");
+      return;
+    }
+
+    try {
+      // Gửi yêu cầu lưu mã lên Server
+      const response = await fetch("http://localhost:5000/api/users/save-voucher", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          userId: user._id, 
+          voucherCode: code 
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert("🎉 Đã thêm vào túi voucher thành công!");
+        
+        // Cập nhật State tại chỗ để nút bấm đổi trạng thái "Đã thu thập" ngay lập tức
+        const newSavedList = [...savedVouchers, code];
+        setSavedVouchers(newSavedList);
+        
+        // Đồng bộ vào localStorage
+        localStorage.setItem("savedVouchers", JSON.stringify(newSavedList));
+      } else {
+        alert(data.message || "Không thể lưu mã.");
+      }
+    } catch (err) {
+      console.error("❌ Lỗi kết nối Server:", err);
+      alert("Lỗi kết nối, vui lòng thử lại sau!");
+    }
   };
 
-  return (
-    <section style={{ padding: "20px 40px", background: "#eef6ff" }}>
-      <img src={bannerImg} alt="banner sale" style={bannerStyle} />
+  // --- GIAO DIỆN CHỜ ---
+  if (loading) {
+    return (
+      <div style={{ padding: "100px", textAlign: "center", fontSize: "18px", color: "#666" }}>
+        🚀 Đang tải khuyến mãi hấp dẫn...
+      </div>
+    );
+  }
 
-      <div style={gridStyle}>
-        {voucherList.map((v, i) => (
-          <Voucher
-            key={i}
-            data={v}
-            mainColor="#339BE5"
-            isSaved={savedVouchers.includes(v.code)}
-            onSave={handleSaveVoucher}
-          />
-        ))}
+  // --- GIAO DIỆN CHÍNH ---
+  return (
+    <section style={{ padding: "20px 40px", background: "#f8fbff", minHeight: "100vh" }}>
+      {/* Banner Khuyến mãi */}
+      <img 
+        src={bannerImg} 
+        alt="Banner Sale" 
+        style={{ 
+          width: "100%", 
+          aspectRatio: "400/168", 
+          objectFit: "cover", 
+          borderRadius: "20px", 
+          marginBottom: "30px",
+          boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
+        }} 
+      />
+
+      {/* Tiêu đề trang */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+        <h2 style={{ color: "#333", borderLeft: "5px solid #339BE5", paddingLeft: "15px", margin: 0 }}>
+          Mã Giảm Giá Độc Quyền
+        </h2>
+        {!isLoggedIn && (
+          <span style={{ color: "#ff4d4d", fontSize: "14px", fontWeight: "bold" }}>
+            * Đăng nhập để lưu mã vào ví của bạn
+          </span>
+        )}
+      </div>
+
+      {/* Danh sách Voucher Grid */}
+      <div style={{ 
+        display: "grid", 
+        gridTemplateColumns: "repeat(auto-fit, minmax(380px, 1fr))", 
+        gap: "25px" 
+      }}>
+        {vouchers.length > 0 ? (
+          vouchers.map((v) => (
+            <Voucher
+              key={v._id}
+              data={{ ...v, img: v.img || logoImg }}
+              mainColor="#339BE5"
+              // Kiểm tra xem mã code này đã nằm trong danh sách ĐÃ LƯU chưa
+              isSaved={savedVouchers.includes(v.code)}
+              onSave={handleSaveVoucher}
+            />
+          ))
+        ) : (
+          <p style={{ textAlign: "center", gridColumn: "1/-1", color: "#999" }}>
+            Hiện tại chưa có mã giảm giá nào mới.
+          </p>
+        )}
       </div>
     </section>
   );

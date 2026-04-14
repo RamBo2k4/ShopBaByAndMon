@@ -1,0 +1,51 @@
+[{
+  "_id": {
+    "$oid": "69de24212b5c2eb5f44e5635"
+  },
+  "userPhone": "0773880668",
+  "userName": "Đoàn Thị Thảo Nguyên",
+  "items": [
+    {
+      "id": 1,
+      "name": "Tã quần Bobby Gói Cực Đại S100/M76/L68/XL62 cho bé",
+      "price": 299000,
+      "quantity": 2,
+      "image": "/img/TaquanBobby.png"
+    },
+    {
+      "id": 2,
+      "name": "Sữa bột Similac 5G Số 2 900g",
+      "price": 612000,
+      "quantity": 1,
+      "image": "/img/similac.jpg"
+    }
+  ],
+  "savedVouchers": [
+    "WELCOME10",
+    "MILK20K"
+  ]
+},
+{
+  "_id": {
+    "$oid": "69de3ea22b5c2eb5f44e563c"
+  },
+  "userPhone": "0673880668",
+  "userName": "Đoàn Thị Thảo Nguyên",
+  "items": [
+    {
+      "id": 1,
+      "name": "Tã quần Bobby Gói Cực Đại S100/M76/L68/XL62 cho bé",
+      "price": 299000,
+      "quantity": 2,
+      "image": "/img/TaquanBobby.png"
+    },
+    {
+      "id": 2,
+      "name": "Sữa bột Similac 5G Số 2 900g",
+      "price": 612000,
+      "quantity": 1,
+      "image": "/img/similac.jpg"
+    }
+  ],
+  "savedVouchers": []
+}]

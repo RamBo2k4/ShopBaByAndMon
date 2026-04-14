@@ -1,3 +1,4 @@
+/* --- CSS GỐC CỦA BẠN --- */
 body {
   margin: 0;
   padding: 0;
@@ -38,7 +39,7 @@ body {
 
 .logo {
   margin-left: -40px;
-  margin-top: 8px;
+  margin-top: 0px;
 }
 .logo img {
   height: 91px;
@@ -59,20 +60,22 @@ body {
   outline: none;
   background-color: aliceblue;
   margin-left: 50px;
-  color: black; /* 👈 chữ */
-  caret-color: black; /* 👈 con trỏ */
+  color: black;
+  caret-color: black;
 }
 
 .header-actions {
   display: flex;
   gap: 20px;
+  align-items: center; /* Đảm bảo các nút căn giữa theo chiều dọc */
 }
 
-.header-actions button {
+.header-actions button, 
+.user-info-btn {
   background: none;
   border: none;
   color: white;
-  font-size: 19px;
+  font-size: 17px; /* Chỉnh nhỏ lại một chút để vừa tên dài */
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -80,18 +83,115 @@ body {
   align-items: center;
   gap: 5px;
   outline: none;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+  border-radius: 8px;
 }
 
 .header-actions .btn-home {
   margin-left: 50px;
 }
 
-.header-actions button:hover {
-  /* opacity: 0.8; */
+.header-actions button:hover,
+.user-info-btn:hover {
   background: rgba(255, 255, 255, 0.12);
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }
+
 main {
-  margin-top: 150px; /* 80 banner + 70 header fhgsafghd*/
+  margin-top: 170px; /* 80 banner + 90 header */
+}
+
+/* --- CSS BỔ SUNG CHO DROPDOWN LOGOUT --- */
+
+.user-menu-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: block; /* Luôn là block vì việc ẩn/hiện đã do React quản lý */
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  min-width: 180px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 10000;
+  border-radius: 8px;
+  margin-top: 10px; /* Khoảng cách với nút bấm */
+  overflow: hidden;
+  border: 1px solid #ddd;
+  animation: fadeIn 0.2s ease-out; /* Thêm hiệu ứng hiện ra cho mượt */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-item {
+  color: #333 !important;
+  padding: 12px 16px;
+  display: flex !important; /* Đổi thành flex để căn chỉnh text */
+  flex-direction: row !important;
+  align-items: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+  border: none;
+  background: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+.logout-btn {
+  color: #d9534f !important;
+  font-weight: bold;
+}
+
+.user-name {
+  font-weight: bold;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Nếu tên quá dài sẽ có dấu ... */
+}
+
+/* --- Bổ sung cho Link --- */
+
+/* Loại bỏ gạch chân và màu xanh mặc định của thẻ Link */
+.nav-link-item, 
+.logo, 
+.dropdown-item {
+  text-decoration: none; 
+  color: inherit; /* Lấy màu trắng từ button hoặc màu đen từ dropdown */
+  display: flex;
+  align-items: center;
+}
+
+/* Đảm bảo khi bọc Link ngoài Button thì Button không bị lệch */
+.nav-link-item button {
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Reset riêng cho logo để không có viền hay gạch chân */
+.logo {
+  outline: none;
+}
+
+/* Đảm bảo các link trong dropdown có màu tối */
+.dropdown-content .dropdown-item {
+  color: #333 !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
 }

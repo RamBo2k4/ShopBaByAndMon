@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "69de239f2b5c2eb5f44e5630"
+  },
+  "fullName": "Đoàn Thị Thảo Nguyên",
+  "phone": "0773880668",
+  "password": "123456",
+  "savedVouchers": [
+    "WELCOME10",
+    "MILK20K",
+    "BABY50K",
+    "MON5",
+    "FREESHIP30",
+    "COMBO15",
+    "DIAPER40K"
+  ],
+  "__v": 3
+}]

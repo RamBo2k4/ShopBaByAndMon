@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom"; // Import Link để điều hướng
 import IconGrid from "./IconGrid";
 
-function Footer({ onNavigate }) {
+// Không cần prop onNavigate nữa
+function Footer() {
 
   const colStyle = {
     flex: "1 1 300px",
@@ -15,11 +17,12 @@ function Footer({ onNavigate }) {
     cursor: "pointer",
     display: "block",
     marginBottom: "4px",
-    textDecoration: "underline"
+    textDecoration: "underline",
+    color: "white" 
   };
 
   const ListPay = [
-    { src: "../src/assets//img/momo.png", link: "https://demo-momo.com" },
+    { src: "../src/assets/img/momo.png", link: "https://demo-momo.com" },
     { src: "../src/assets/img/vietcombank.jpg", link: "https://demo-vietcombank.com" },
     { src: "../src/assets/img/Agribank.png", link: "https://demo-agribank.com" },
     { src: "../src/assets/img/vnpay.png", link: "https://demo-vnpay.com" },
@@ -43,6 +46,7 @@ function Footer({ onNavigate }) {
         width: "100%",
         alignItems: "stretch"
       }}>
+        {/* Cột 1: Thông tin liên hệ */}
         <div style={colStyle}>
           <h3 style={{ textAlign: "center" }}>Thông tin liên hệ</h3>
           <p><b><br /> Thành viên Trường Đại Học Công Nghiệp TP.HCM</b></p>
@@ -52,22 +56,28 @@ function Footer({ onNavigate }) {
           <p><b>CSKH: 1900 1000</b></p>
         </div>
 
+        {/* Cột 2: Hỗ trợ khách hàng - Đã chuyển sang Link */}
         <div style={{ ...colStyle, textAlign: "center" }}>
           <h3>Hỗ trợ khách hàng</h3>
           <p><b><br /> Tra cứu hóa đơn</b></p>
-          <p style={{ ...linkStyle, fontWeight: "bold" }} onClick={() => onNavigate && onNavigate('faq')}>
+          
+          <Link to="/faq" style={linkStyle}>
             <b>FAQ</b>
-          </p>
+          </Link>
+          
           <p><b>Bảo hành &amp; bảo trì</b></p>
           <p><b>Tin khuyến mãi</b></p>
-          <p style={{ ...linkStyle, fontWeight: "bold" }} onClick={() => onNavigate && onNavigate('chinhsach')}>
+          
+          <Link to="/chinhsach" style={linkStyle}>
             <b>Chính sách giao hàng</b>
-          </p>
-          <p style={{ ...linkStyle, fontWeight: "bold" }} onClick={() => onNavigate && onNavigate('chinhsach')}>
+          </Link>
+          
+          <Link to="/chinhsach" style={linkStyle}>
             <b>Chính sách thanh toán</b>
-          </p>
+          </Link>
         </div>
 
+        {/* Cột 3: Về thương hiệu */}
         <div style={colStyle}>
           <h3 style={{ textAlign: "center" }}>Về thương hiệu</h3>
           <div style={{ display: "flex" }}>
@@ -86,6 +96,7 @@ function Footer({ onNavigate }) {
           </div>
         </div>
 
+        {/* Cột 4: Kết nối */}
         <div style={{ ...colStyle, borderRight: "none" }}>
           <h3 style={{ textAlign: "center" }}>Kết nối với chúng tôi</h3>
           <br />
@@ -97,10 +108,10 @@ function Footer({ onNavigate }) {
             flexWrap: "wrap",
             marginBottom: "25px"
           }}>
-            <img src="../src/assets/img/QR.png" style={{ width: "120px", height: "120px" }} />
+            <img src="../src/assets/img/QR.png" style={{ width: "120px", height: "120px" }} alt="QR" />
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <img src="../src/assets/img/app.png" style={{ width: "160px" }} />
-              <img src="../src/assets/img/ggl.png" style={{ width: "160px" }} />
+              <img src="../src/assets/img/app.png" style={{ width: "160px" }} alt="App" />
+              <img src="../src/assets/img/ggl.png" style={{ width: "160px" }} alt="Google" />
             </div>
           </div>
           <IconGrid icons={Listlogictic} rows={1} cols={3} size={60} />

@@ -1,362 +1,160 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CartItem from "../components/CartItem";
 import AddressForm from "../components/AddressForm";
 import CartSummary from "../components/CartSummary";
 import Map from "../components/Map";
 import "../assets/css/Cart.css";
-import imgProduct from "../assets/img/sanpham_card.jpg";
-
-
-const formatPrice = (price) => {
-  return price.toLocaleString("vi-VN") + " VND";
-};
-
 
 const Cart = () => {
-  const [vouchers, setVouchers] = useState([]);
-
-useEffect(() => {
-  fetch("/vouchers.json")
-    .then((res) => res.json())
-    .then((data) => setVouchers(data))
-    .catch((err) => console.error("Lỗi load vouchers:", err));
-}, []);
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      name: "Sữa bột dielac alpha gold 800 gram",
-      brand: "Alpha",
-      price: 360000,
-      quantity: 1,
-      image: imgProduct,
-    },
-    {
-      id: 2,
-      name: "Sữa bột dielac alpha gold 800 gram",
-      brand: "Alpha",
-      price: 360000,
-      quantity: 1,
-      image: imgProduct,
-    },
-    {
-      id: 3,
-      name: "Sữa bột dielac alpha gold 800 gram",
-      brand: "Alpha",
-      price: 360000,
-      quantity: 1,
-      image: imgProduct,
-    },
-  ]);
+  const navigate = useNavigate();
+  const [items, setItems] = useState([]);
+  const [allVouchers, setAllVouchers] = useState([]); 
+  const [savedCodes, setSavedCodes] = useState([]);   
+  const [loading, setLoading] = useState(true);
 
   const [address, setAddress] = useState(null);
   const [showForm, setShowForm] = useState(false);
-
-  const [voucherCode, setVoucherCode] = useState("");
   const [appliedVoucher, setAppliedVoucher] = useState(null);
-  const [voucherMessage, setVoucherMessage] = useState("");
-  const [voucherError, setVoucherError] = useState(false);
 
-  const subtotal = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-
-  const validateVoucher = (voucher, currentSubtotal) => {
-    if (!voucher) {
-      return {
-        valid: false,
-        message: "Mã giảm giá không tồn tại.",
-      };
-    }
-
-    const expireDate = new Date(`${voucher.expire}T23:59:59`);
-    const today = new Date();
-
-    if (Number.isNaN(expireDate.getTime()) || expireDate < today) {
-      return {
-        valid: false,
-        message: "Mã giảm giá đã hết hạn.",
-      };
-    }
-
-    if (currentSubtotal < voucher.minOrder) {
-      return {
-        valid: false,
-        message: `Đơn hàng tối thiểu ${formatPrice(
-          voucher.minOrder
-        )} để dùng mã này.`,
-      };
-    }
-
-    return { valid: true, message: "" };
-  };
-
-  const getDiscountAmount = (voucher, currentSubtotal) => {
-    if (!voucher) return 0;
-
-    const validation = validateVoucher(voucher, currentSubtotal);
-    if (!validation.valid) return 0;
-
-    if (voucher.type === "fixed") {
-      return Math.min(voucher.value, currentSubtotal);
-    }
-
-    if (voucher.type === "percent") {
-      let discountValue = Math.round((currentSubtotal * voucher.value) / 100);
-
-      if (voucher.maxDiscount) {
-        discountValue = Math.min(discountValue, voucher.maxDiscount);
-      }
-
-      return Math.min(discountValue, currentSubtotal);
-    }
-
-    return 0;
-  };
-
-  const discount = getDiscountAmount(appliedVoucher, subtotal);
-  const total = Math.max(subtotal - discount, 0);
-
+  // 1. Fetch dữ liệu ban đầu
   useEffect(() => {
-    if (!appliedVoucher) return;
+    const rawUser = localStorage.getItem("user");
+    if (!rawUser) { navigate("/"); return; }
+    const loggedInUser = JSON.parse(rawUser);
 
-    const validation = validateVoucher(appliedVoucher, subtotal);
+    const fetchData = async () => {
+      try {
+        const [cartRes, vRes, savedRes] = await Promise.all([
+          fetch(`http://localhost:5000/api/cart/${loggedInUser.phone}`),
+          fetch("http://localhost:5000/testDB/vourcher"),
+          fetch(`http://localhost:5000/api/users/saved-vouchers/${loggedInUser._id}`)
+        ]);
 
-    if (!validation.valid) {
-      setVoucherMessage(
-        `Mã ${appliedVoucher.code} đã bị gỡ. ${validation.message}`
-      );
-      setVoucherError(true);
+        if (cartRes.ok) setItems(await cartRes.json());
+        if (vRes.ok) setAllVouchers(await vRes.json());
+        if (savedRes.ok) setSavedCodes(await savedRes.json());
+      } catch (err) {
+        console.error("Lỗi tải dữ liệu giỏ hàng:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [navigate]);
+
+  // 2. Tính toán tiền bạc
+  const subtotal = items.reduce((sum, item) => sum + (item.price || item.newPrice || 0) * item.quantity, 0);
+
+  // TỰ ĐỘNG HỦY VOUCHER: Nếu tổng tiền giảm xuống dưới mức tối thiểu của Voucher
+  useEffect(() => {
+    if (appliedVoucher && subtotal < appliedVoucher.minOrder) {
       setAppliedVoucher(null);
+      alert(`Voucher ${appliedVoucher.code} đã bị gỡ vì đơn hàng không đủ điều kiện tối thiểu.`);
     }
   }, [subtotal, appliedVoucher]);
 
-  const updateQuantity = (id, newQuantity) => {
-    if (newQuantity < 1) return;
+  const discount = appliedVoucher 
+    ? (appliedVoucher.type === 'percent' ? (subtotal * appliedVoucher.value / 100) : appliedVoucher.value) 
+    : 0;
 
-    setItems(
-      items.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
+  // Lọc voucher mà User đã thực sự thu thập
+  const myVouchers = allVouchers.filter(v => savedCodes.includes(v.code));
 
-  const removeItem = (id) => {
-    setItems(items.filter((item) => item.id !== id));
-  };
-
-  const saveAddress = (addressData) => {
-    setAddress(addressData);
-    setShowForm(false);
-  };
-
-  const handleApplyVoucher = (e) => {
-    e.preventDefault();
-
-    const normalizedCode = voucherCode.trim().toUpperCase();
-
-    if (!normalizedCode) {
-      setVoucherMessage("Vui lòng nhập mã giảm giá.");
-      setVoucherError(true);
-      return;
-    }
-
-    const foundVoucher = vouchers.find(
-      (voucher) => voucher.code.toUpperCase() === normalizedCode
-    );
-
-    const validation = validateVoucher(foundVoucher, subtotal);
-
-    if (!validation.valid) {
-      setAppliedVoucher(null);
-      setVoucherMessage(validation.message);
-      setVoucherError(true);
-      return;
-    }
-
-    const discountValue = getDiscountAmount(foundVoucher, subtotal);
-
-    setAppliedVoucher(foundVoucher);
-    setVoucherCode(normalizedCode);
-    setVoucherMessage(
-      `Áp dụng thành công mã ${foundVoucher.code}. Bạn được giảm ${formatPrice(
-        discountValue
-      )}.`
-    );
-    setVoucherError(false);
-  };
-
-  const handleRemoveVoucher = () => {
-    setAppliedVoucher(null);
-    setVoucherCode("");
-    setVoucherMessage("Đã bỏ mã giảm giá.");
-    setVoucherError(false);
-  };
-
-  if (items.length === 0) {
-    return (
-      <div className="cart-page">
-        <div className="container">
-          <div className="empty-cart">
-            <h2>Giỏ hàng trống</h2>
-            <p>Hãy thêm sản phẩm vào giỏ hàng</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <div className="container" style={{padding: "100px", textAlign: "center"}}>Đang tải...</div>;
 
   return (
-    <div className="cart-page">
-      <div className="container">
-        <div className="cart-content">
-          <div className="cart-items-section">
-            <h2>Giỏ hàng</h2>
+    <div className="cart-page" style={{ background: "#f5f5f5", padding: "20px 0" }}>
+      <div className="container" style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
+        
+        {/* --- KHỐI ĐỊA CHỈ & MAP --- */}
+        <div style={{ display: "flex", gap: "20px", background: "#fff", padding: "20px", borderRadius: "12px", boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
+          <div style={{ flex: 2, height: "300px", borderRadius: "8px", overflow: "hidden", border: "1px solid #eee" }}>
+            <Map />
+          </div>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <h3 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "15px", color: "black" }}>📍 Địa chỉ giao hàng</h3>
+            {address ? (
+              <div style={{ padding: "15px", border: "1px solid #339be5", borderRadius: "8px", background: "#f0f9ff" }}>
+                <small style={{ color: "#339be5", fontWeight: "bold", fontSize: "11px", display: "block", marginBottom: "4px" }}>👤 NGƯỜI NHẬN</small>
+                <p style={{ margin: 0, color: "#333", fontSize: "15px" }}>
+                  <b>{address.fullName}</b> | <b>{address.phone}</b>
+                </p>
+                <small style={{ color: "#339be5", fontWeight: "bold", fontSize: "11px", display: "block", marginTop: "12px", marginBottom: "4px" }}>🏠 ĐỊA CHỈ</small>
+                <p style={{ color: "#444", margin: 0, fontSize: "14px" }}>{address.address}</p>
+                <button onClick={() => setShowForm(true)} style={{ marginTop: "10px", color: "#339be5", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", fontSize: "13px" }}>Thay đổi</button>
+              </div>
+            ) : (
+              <button onClick={() => setShowForm(true)} style={{ padding: "20px", border: "2px dashed #ddd", borderRadius: "8px", cursor: "pointer", background: "#fafafa", color: "#888", width: "100%" }}>+ Chọn địa chỉ nhận hàng</button>
+            )}
+            {showForm && <AddressForm onSave={(d) => {setAddress(d); setShowForm(false)}} onCancel={() => setShowForm(false)} />}
+          </div>
+        </div>
 
+        {/* --- DANH SÁCH SẢN PHẨM --- */}
+        <div style={{ background: "#fff", padding: "20px", borderRadius: "12px", boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
+          <h2 style={{ fontSize: "20px", fontWeight: "bold", color: "black", marginBottom: "20px" }}>🛒 Giỏ hàng ({items.length})</h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
             {items.map((item) => (
-              <CartItem
-                key={item.id}
-                item={item}
-                onUpdateQuantity={updateQuantity}
-                onRemove={removeItem}
-              />
+              <div key={item._id || item.id} style={{ borderBottom: "1px solid #eee", paddingBottom: "15px" }}>
+                <CartItem 
+                  item={item} 
+                  onUpdateQuantity={(id, q) => setItems(prev => prev.map(i => (i._id === id || i.id === id) ? {...i, quantity: q} : i))}
+                  onRemove={(id) => setItems(prev => prev.filter(i => (i._id !== id && i.id !== id)))}
+                />
+                <div style={{ textAlign: "right", fontSize: "13px", color: "#333", marginTop: "5px" }}>
+                   Thành tiền: <b>{((item.price || item.newPrice) * item.quantity).toLocaleString()}đ</b>
+                </div>
+              </div>
             ))}
           </div>
+        </div>
 
-          <div>
-            <Map />
+        {/* --- VOUCHER & TỔNG TIỀN --- */}
+        <div style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
+          <div style={{ flex: 1.5, background: "#fff", padding: "20px", borderRadius: "12px", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+            <h3 style={{ fontWeight: "bold", marginBottom: "20px", color: "#333" }}>🎟️ Ví Voucher của bạn</h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxHeight: "400px", overflowY: "auto" }}>
+              {myVouchers.length > 0 ? myVouchers.map((v) => {
+                const isEligible = subtotal >= v.minOrder;
+                const isSelected = appliedVoucher?.code === v.code;
+                const saving = v.type === 'percent' ? (subtotal * v.value / 100) : v.value;
 
-            <div className="address-section">
-              <h3>Địa chỉ nhận hàng</h3>
-
-              {address ? (
-                <div className="address-info">
-                  <p>
-                    {address.fullName} - {address.phone}
-                    <br />
-                    {address.address}, {address.city}
-                  </p>
-                  <button onClick={() => setShowForm(true)}>Thay đổi</button>
-                </div>
-              ) : (
-                <button
-                  style={{ background: "#339be5", color: "white" }}
-                  onClick={() => setShowForm(true)}
-                >
-                  + Thêm địa chỉ
-                </button>
-              )}
-
-              {showForm && (
-                <AddressForm
-                  onSave={saveAddress}
-                  onCancel={() => setShowForm(false)}
-                />
-              )}
-            </div>
-
-            <div
-              style={{
-                background: "white",
-                borderRadius: "10px",
-                padding: "20px",
-                marginTop: "20px",
-                marginBottom: "20px",
-              }}
-            >
-              <h3 style={{ marginBottom: "12px" }}>Mã giảm giá</h3>
-
-              <form
-                onSubmit={handleApplyVoucher}
-                style={{ display: "flex", gap: "10px", marginBottom: "12px" }}
-              >
-                <input
-                  type="text"
-                  placeholder="Nhập mã voucher"
-                  value={voucherCode}
-                  onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
-                  style={{
-                    flex: 1,
-                    padding: "10px",
-                    border: "1px solid #ddd",
-                    borderRadius: "6px",
-                  }}
-                />
-                <button
-                  type="submit"
-                  style={{
-                    background: "#339be5",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "6px",
-                    padding: "10px 16px",
-                    cursor: "pointer",
-                  }}
-                >
-                  Áp dụng
-                </button>
-              </form>
-
-              {appliedVoucher && (
-                <div
-                  style={{
-                    background: "#e9f5fc",
-                    border: "1px solid #339be5",
-                    borderRadius: "8px",
-                    padding: "12px",
-                    marginBottom: "10px",
-                  }}
-                >
-                  <p style={{ margin: "0 0 6px 0", fontWeight: "bold" }}>
-                    {appliedVoucher.code} - {appliedVoucher.title}
-                  </p>
-                  <p style={{ margin: "0 0 6px 0" }}>
-                    Giảm: {formatPrice(discount)}
-                  </p>
-                  <p style={{ margin: "0 0 10px 0" }}>
-                    Đơn tối thiểu: {formatPrice(appliedVoucher.minOrder)}
-                  </p>
-
-                  <button
-                    type="button"
-                    onClick={handleRemoveVoucher}
+                return (
+                  <div 
+                    key={v._id} 
+                    onClick={() => isEligible && setAppliedVoucher(v)}
                     style={{
-                      background: "#ff6b6b",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "6px",
-                      padding: "8px 12px",
-                      cursor: "pointer",
+                      display: "flex", minHeight: "90px",
+                      border: isSelected ? "2px solid #e44d26" : "1px solid #eee",
+                      borderRadius: "10px",
+                      cursor: isEligible ? "pointer" : "not-allowed",
+                      background: isSelected ? "#fff5f4" : (isEligible ? "#fff" : "#f8f8f8"),
+                      opacity: isEligible ? 1 : 0.7
                     }}
                   >
-                    Bỏ mã
-                  </button>
-                </div>
-              )}
-
-              {voucherMessage && (
-                <p
-                  style={{
-                    margin: 0,
-                    color: voucherError ? "#d32f2f" : "#2e7d32",
-                    fontSize: "14px",
-                    fontWeight: 500,
-                  }}
-                >
-                  {voucherMessage}
-                </p>
-              )}
-
-              <p style={{ marginTop: "12px", color: "#666", fontSize: "14px" }}>
-                Mã test nhanh: MILK20K, BABY50K, COMBO15, MOMBABY8
-              </p>
+                    <div style={{ width: "80px", background: isEligible ? "#e44d26" : "#bbb", color: "#fff", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                      <b style={{fontSize: "20px"}}>{v.type === 'percent' ? `${v.value}%` : `${v.value/1000}k`}</b>
+                      <span style={{fontSize: "10px"}}>GIẢM</span>
+                    </div>
+                    <div style={{ padding: "12px 15px", flex: 1 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <span style={{ fontWeight: "bold", color: "#333" }}>{v.code}</span>
+                        {isSelected && <span style={{ color: "#e44d26" }}>✔</span>}
+                      </div>
+                      <div style={{ fontSize: "13px", color: "#e44d26", fontWeight: "bold", margin: "4px 0" }}>
+                        {isEligible ? `Giảm ngay: -${saving.toLocaleString()}đ` : `Thiếu ${(v.minOrder - subtotal).toLocaleString()}đ`}
+                      </div>
+                      <div style={{ fontSize: "11px", color: "#888" }}>Đơn từ: {v.minOrder.toLocaleString()}đ</div>
+                    </div>
+                  </div>
+                );
+              }) : <p style={{color: "#999", textAlign: "center"}}>Ví voucher trống.</p>}
             </div>
+          </div>
 
-            <CartSummary
-              subtotal={subtotal}
-              discount={discount}
-              total={total}
-            />
+          <div style={{ flex: 1 }}>
+            <CartSummary subtotal={subtotal} discount={discount} total={subtotal - discount} />
           </div>
         </div>
       </div>
