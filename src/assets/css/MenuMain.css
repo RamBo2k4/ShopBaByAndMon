@@ -1,6 +1,7 @@
 .main-menu {
-  min-width: 260px;
-  max-width: 480px;
+  width: 22%;
+  min-width: 14rem;
+  max-width: 28%;
   background: #ddeefd;
   padding: 12px;
   padding-top: 24px;
@@ -9,6 +10,8 @@
   margin-left: 0;
   margin-right: auto;
   display: block;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
 /* HEADER */
@@ -32,7 +35,7 @@
 
 /* TAB MẶC ĐỊNH NGẮN HƠN */
 .main-menu__item {
-  width: 80%;
+  width: 100%;
   background: linear-gradient(135deg, #008cff, #0077e6);
   color: #fff;
   padding: 10px 14px;
@@ -44,6 +47,7 @@
   text-align: center;
   transition: all 0.3s ease;
   box-shadow: 0 4px 10px rgba(0, 132, 255, 0.15);
+  box-sizing: border-box;
 }
 
 /* HOVER DÀI RA, TO HƠN, DỊCH NHẸ */
@@ -149,4 +153,27 @@
 .main-menu__banner-img:hover {
   transform: scale(1.03);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 1200px) {
+  .main-menu {
+    width: 26%;
+    max-width: 32%;
+  }
+}
+
+@media (max-width: 900px) {
+  .main-menu {
+    width: 30%;
+    max-width: 36%;
+    min-width: 12rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-menu {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
 }
