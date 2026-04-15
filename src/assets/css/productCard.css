@@ -1,19 +1,19 @@
 .product-card {
-  width: 300px;
+  width: 100%;
   background: #e8faff;
   border-radius: 20px;
   border: 2px solid #339be5;
   overflow: hidden;
   position: relative;
   font-family: Arial, sans-serif;
-  height: 430px;
+  height: 338px;
   box-shadow: 0 10px 24px rgba(51, 155, 229, 0.14);
 }
 
 /* IMAGE */
 .product-image {
-  height: 205px;
-  padding: 14px;
+  height: 145px;
+  padding: 8px;
   background: linear-gradient(180deg, #ffffff 0%, #f7fcff 100%);
   display: flex;
   align-items: center;
@@ -36,14 +36,15 @@
 
 /* INFO */
 .product-info {
-  padding: 12px 14px 14px;
+  padding: 8px 10px 10px;
 }
 
 /* PRICE */
 .price-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .old-price {
@@ -51,49 +52,51 @@
   color: #339be5;
   font-weight: 700;
   font-style: italic;
+  font-size: 12px;
 }
 
 .discount {
   background: red;
   color: white;
-  padding: 3px 8px;
+  padding: 2px 6px;
   border-radius: 999px;
-  font-size: 13px;
+  font-size: 11px;
 }
 
 .new-price {
-  font-size: 26px;
+  font-size: 17px;
   font-weight: bolder;
   color: red;
-  /* margin-top: 5px; */
+  line-height: 1.2;
 }
 
 /* DESCRIPTION */
 .description {
   color: #555;
-  margin: 6px 0 10px 0;
-  height: 52px;
-  line-height: 1.45;
+  margin: 4px 0 6px 0;
+  height: 38px;
+  line-height: 1.3;
+  font-size: 13px;
   overflow: hidden;
 }
 
 /* OPTIONS */
 .options {
   display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 6px;
+  margin-bottom: 6px;
   flex-wrap: wrap;
 }
 
 .options span {
   background: #339be5;
-  padding: 5px 8px;
+  padding: 3px 6px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 9px;
 }
 .age {
   color: #339be5;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   margin-bottom: 3px;
 }
@@ -106,10 +109,11 @@
 
 .stars {
   color: gold;
+  font-size: 13px;
 }
 .meta span {
   color: #339be5;
-  font-size: 13px;
+  font-size: 11px;
   font-style: italic;
   font-weight: 500;
 }
@@ -117,15 +121,15 @@
 /* CART BUTTON */
 .cart-btn {
   position: absolute;
-  right: 10px;
-  bottom: 5px;
+  right: 8px;
+  bottom: 8px;
   background: #339be5;
   color: white;
   border: none;
-  width: 60px;
-  height: 60px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  font-size: 25px;
+  font-size: 18px;
   cursor: pointer;
   display: flex;
   justify-content: center;
